@@ -1,6 +1,7 @@
 package pl.edu.pw.ee;
 
 import pl.edu.pw.ee.services.Sorting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,13 @@ public class QuickSort implements Sorting {
 
             while (n > 0) {
                 n--;
+
                 left = starts.get(n);
+                starts.remove(left);
+
                 right = ends.get(n);
+                ends.remove(right);
+
                 pivot = splitData(data, left, right);
 
                 if (pivot - 1 > left) {
@@ -83,5 +89,4 @@ public class QuickSort implements Sorting {
             data[secondId] = firstValue;
         }
     }
-
 }

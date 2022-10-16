@@ -3,8 +3,11 @@ package pl.edu.pw.ee;
 import org.junit.Before;
 import org.junit.Test;
 import pl.edu.pw.ee.services.Sorting;
+
+import java.util.Arrays;
+import java.util.Random;
+
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 public class SelectionSortTest {
 
@@ -16,65 +19,168 @@ public class SelectionSortTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_givenArrayIsNull() {
+    public void should_throwAnException_when_ArrayIsNull() {
         //given
-        double[] testArray = null;
+        double[] nums = null;
 
         //when
-        selectionSort.sort(testArray);
+        selectionSort.sort(nums);
 
         //then
         assert false;
     }
 
     @Test
-    public void should_returnSortedArray_when_givenArrayHasOneElement() {
+    public void should_sortArrayCorrectly_when_ArrayHasNoElements() {
         //given
-        double[] testArray = {1};
+        double[] nums = {};
 
-        
         //when
-        double[] expectedArray = {1};
-        int expectedArrayLength = 1;
+        selectionSort.sort(nums);
 
-        
         //then
-        selectionSort.sort(testArray);
-        assertArrayEquals(testArray, expectedArray, 0);
-        assertEquals(expectedArrayLength, testArray.length);
+        double[] expected = {};
+        assertArrayEquals(expected, nums, 0);
     }
 
     @Test
-    public void should_returnSortedArray_when_givenArrayIsSortedAscending() {
+    public void should_sortArrayCorrectly_when_ArrayHasOneElement() {
         //given
-        double[] testArray = {1, 2, 3, 4, 5};
+        double[] nums = {1};
 
-        
         //when
-        double[] expectedArray = {1, 2, 3, 4, 5};
-        int expectedArrayLength = 5;
+        selectionSort.sort(nums);
 
-        
         //then
-        selectionSort.sort(testArray);
-        assertArrayEquals(testArray, expectedArray, 0);
-        assertEquals(expectedArrayLength, testArray.length);
+        double[] expected = {1};
+        assertArrayEquals(expected, nums, 0);
     }
 
     @Test
-    public void should_returnSortedArray_when_givenArrayIsSortedDescending() {
+    public void should_sortArrayCorrectly_when_ArrayIsSortedAscending() {
         //given
-        double[] testArray = {5, 4, 3, 2, 1};
+        double[] nums = {1, 2, 3, 4, 5};
 
-        
         //when
-        double[] expectedArray = {1, 2, 3, 4, 5};
-        int expectedArrayLength = 5;
+        selectionSort.sort(nums);
 
-        
         //then
-        selectionSort.sort(testArray);
-        assertArrayEquals(testArray, expectedArray, 0);
-        assertEquals(expectedArrayLength, testArray.length);
+        double[] expected = {1, 2, 3, 4, 5};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayIsSortedDescending() {
+        //given
+        double[] nums = {5, 4, 3, 2, 1};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {1, 2, 3, 4, 5};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayHasManyEqualElements() {
+        //given
+        double[] nums = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayHasNegativeElements() {
+        //given
+        double[] nums = {-5, -6, -8, -10, -12, -13, -10};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {-13, -12, -10, -10, -8, -6, -5};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayHasRandomElements() {
+        //given
+        double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {-13, -5, -3, -2, 3, 9, 10, 15};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayHasManyPositiveElements() {
+        //given
+        double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {-13, -5, -3, -2, 3, 9, 10, 15};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayIsOptimistic() {
+        //given
+        double[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayIsPesimistic() {
+        //given
+        double[] nums = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+        //when
+        selectionSort.sort(nums);
+
+        //then
+        double[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_ArrayHasManyRandomElements() {
+        //given
+        final int SEED = 1000;
+        final int arrayLength = 100_000;
+
+        double[] nums = new double[arrayLength];
+        double[] expected = new double[arrayLength];
+        final Random rnd = new Random(SEED);
+
+        //when
+        for (int i = 0; i < arrayLength; ++i) {
+            double generatedValue = rnd.nextDouble();
+            nums[i] = generatedValue;
+            expected[i] = generatedValue;
+        }
+
+        selectionSort.sort(nums);
+        Arrays.sort(expected);
+
+        //then
+        assertArrayEquals(expected, nums, 0);
     }
 }

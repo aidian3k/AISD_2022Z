@@ -1,1 +1,4 @@
 /aisd_lab_1_sorting/target/
+.idea
+.DS_STORE
+*.iml

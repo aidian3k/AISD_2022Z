@@ -7,16 +7,15 @@ public class SelectionSort implements Sorting {
     @Override
     public void sort(double[] nums) {
         if (nums == null) {
-            throw new IllegalArgumentException("Given array to the method"
-                    + " cannot be null!");
+            throw new IllegalArgumentException("Nums array cannot be null");
         }
 
         int n = nums.length;
 
-        for (int i = 0; i < n - 1; ++i) {
+        for (int i = 0; i < n - 1; i++) {
             int currentMinId = i;
 
-            for (int j = i + 1; j < n; ++j) {
+            for (int j = i + 1; j < n; j++) {
                 if (nums[currentMinId] > nums[j]) {
                     currentMinId = j;
                 }
