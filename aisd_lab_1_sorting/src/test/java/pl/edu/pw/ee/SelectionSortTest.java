@@ -19,7 +19,7 @@ public class SelectionSortTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_ArrayIsNull() {
+    public void should_throwAnException_when_arrayIsNull() {
         //given
         double[] nums = null;
 
@@ -31,7 +31,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasNoElements() {
+    public void should_sortArrayCorrectly_when_arrayHasNoElements() {
         //given
         double[] nums = {};
 
@@ -44,7 +44,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasOneElement() {
+    public void should_sortArrayCorrectly_when_arrayHasOneElement() {
         //given
         double[] nums = {1};
 
@@ -57,7 +57,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayIsSortedAscending() {
+    public void should_sortArrayCorrectly_when_arrayIsSortedAscending() {
         //given
         double[] nums = {1, 2, 3, 4, 5};
 
@@ -70,7 +70,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayIsSortedDescending() {
+    public void should_sortArrayCorrectly_when_arrayIsSortedDescending() {
         //given
         double[] nums = {5, 4, 3, 2, 1};
 
@@ -83,7 +83,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasManyEqualElements() {
+    public void should_sortArrayCorrectly_when_arrayHasManyEqualElements() {
         //given
         double[] nums = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 
@@ -96,7 +96,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasNegativeElements() {
+    public void should_sortArrayCorrectly_when_arrayHasNegativeElements() {
         //given
         double[] nums = {-5, -6, -8, -10, -12, -13, -10};
 
@@ -109,7 +109,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasRandomElements() {
+    public void should_sortArrayCorrectly_when_arrayHasRandomElements() {
         //given
         double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
 
@@ -122,7 +122,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasManyPositiveElements() {
+    public void should_sortArrayCorrectly_when_arrayHasManyPositiveElements() {
         //given
         double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
 
@@ -135,7 +135,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayIsOptimistic() {
+    public void should_sortArrayCorrectly_when_arrayIsOptimistic() {
         //given
         double[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -148,7 +148,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayIsPesimistic() {
+    public void should_sortArrayCorrectly_when_arrayIsPessimistic() {
         //given
         double[] nums = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
@@ -161,7 +161,7 @@ public class SelectionSortTest {
     }
 
     @Test
-    public void should_sortArrayCorrectly_when_ArrayHasManyRandomElements() {
+    public void should_sortArrayCorrectly_when_arrayHasManyRandomElements() {
         //given
         final int SEED = 1000;
         final int arrayLength = 100_000;
