@@ -11,11 +11,11 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class SelectionSortTest {
 
-    private Sorting selectionSort;
+    private Sorting sortingMethod;
 
     @Before
     public void setUp() {
-        selectionSort = new SelectionSort();
+        sortingMethod = new SelectionSort();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -24,7 +24,7 @@ public class SelectionSortTest {
         double[] nums = null;
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         assert false;
@@ -36,7 +36,7 @@ public class SelectionSortTest {
         double[] nums = {};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {};
@@ -49,10 +49,36 @@ public class SelectionSortTest {
         double[] nums = {1};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {1};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_arrayHasTwoElements() {
+        //given
+        double[] nums = {2, 1};
+
+        //when
+        sortingMethod.sort(nums);
+
+        //then
+        double[] expected = {1, 2};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_arrayHasThreeElements() {
+        //given
+        double[] nums = {3, 1, 4};
+
+        //when
+        sortingMethod.sort(nums);
+
+        //then
+        double[] expected = {1, 3, 4};
         assertArrayEquals(expected, nums, 0);
     }
 
@@ -62,7 +88,7 @@ public class SelectionSortTest {
         double[] nums = {1, 2, 3, 4, 5};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {1, 2, 3, 4, 5};
@@ -75,7 +101,7 @@ public class SelectionSortTest {
         double[] nums = {5, 4, 3, 2, 1};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {1, 2, 3, 4, 5};
@@ -88,10 +114,49 @@ public class SelectionSortTest {
         double[] nums = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_firstElementIsNotSorted() {
+        //given
+        double[] nums = {35, 21, 21, 21, 21, 21, 21, 21};
+
+        //when
+        sortingMethod.sort(nums);
+
+        //then
+        double[] expected = {21, 21, 21, 21, 21, 21, 21, 35};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_lastElementIsNotSorted() {
+        //given
+        double[] nums = {3, 3, 3, 3, 3, 3, 1};
+
+        //when
+        sortingMethod.sort(nums);
+
+        //then
+        double[] expected = {1, 3, 3, 3, 3, 3, 3};
+        assertArrayEquals(expected, nums, 0);
+    }
+
+    @Test
+    public void should_sortArrayCorrectly_when_firstAndLastElementAreNotSorted() {
+        //given
+        double[] nums = {4, 1, 2, 3, 0};
+
+        //when
+        sortingMethod.sort(nums);
+
+        //then
+        double[] expected = {0, 1, 2, 3, 4};
         assertArrayEquals(expected, nums, 0);
     }
 
@@ -101,7 +166,7 @@ public class SelectionSortTest {
         double[] nums = {-5, -6, -8, -10, -12, -13, -10};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {-13, -12, -10, -10, -8, -6, -5};
@@ -114,20 +179,7 @@ public class SelectionSortTest {
         double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
 
         //when
-        selectionSort.sort(nums);
-
-        //then
-        double[] expected = {-13, -5, -3, -2, 3, 9, 10, 15};
-        assertArrayEquals(expected, nums, 0);
-    }
-
-    @Test
-    public void should_sortArrayCorrectly_when_arrayHasManyPositiveElements() {
-        //given
-        double[] nums = {10, -5, -2, -3, 3, 9, 15, -13};
-
-        //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {-13, -5, -3, -2, 3, 9, 10, 15};
@@ -140,7 +192,7 @@ public class SelectionSortTest {
         double[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -153,7 +205,7 @@ public class SelectionSortTest {
         double[] nums = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
         //when
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
 
         //then
         double[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -177,10 +229,11 @@ public class SelectionSortTest {
             expected[i] = generatedValue;
         }
 
-        selectionSort.sort(nums);
+        sortingMethod.sort(nums);
         Arrays.sort(expected);
 
         //then
         assertArrayEquals(expected, nums, 0);
     }
+
 }

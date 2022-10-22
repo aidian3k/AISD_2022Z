@@ -1,24 +1,34 @@
 package pl.edu.pw.ee;
 
-import java.util.List;
 import pl.edu.pw.ee.services.HeapExtension;
 import pl.edu.pw.ee.services.HeapInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExtension {
 
-    private List<T> data;
+    private final List<T> data;
 
     public Heap(List<T> data) {
         this.data = data;
+        this.build();
+    }
+
+    public Heap() {
+        this.data = new ArrayList<>();
     }
 
     @Override
     public void put(T item) {
-        int currentIndex = getHeapSize() - 1;
-
-        while (currentIndex > 0) {
-
+        if (item == null) {
+            throw new IllegalArgumentException("Given item cannot be null!");
         }
+
+        data.add(item);
+        int heapSize = getHeapSize();
+
+        heapifyUp(heapSize - 1);
     }
 
     @Override
@@ -26,7 +36,7 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         int heapSize = getHeapSize();
 
         if (heapSize == 0) {
-            throw new ArrayIndexOutOfBoundsException("Cannot pop from empty heap");
+            throw new IllegalStateException("Cannot pop element from empty heap");
         }
 
         T maxValue = data.get(0);
@@ -49,7 +59,58 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     @Override
     public void heapify(int startId, int endId) {
-        // TODO
+        if (startId < 0 || endId < 0) {
+            throw new IllegalArgumentException("The startId and endId must be positive values");
+        }
+
+        int currentId = startId;
+
+        while (currentId < endId) {
+            int leftChild = getLeftChildIndex(currentId);
+            int rightChild = getRightChildIndex(currentId);
+            int largestChild = currentId;
+
+            if (leftChild < endId
+                    && data.get(leftChild).compareTo(data.get(largestChild)) > 0) {
+                largestChild = leftChild;
+            }
+
+            if (rightChild < endId
+                    && data.get(rightChild).compareTo(data.get(largestChild)) > 0) {
+                largestChild = rightChild;
+            }
+
+            if (largestChild == currentId) {
+                return;
+            } else {
+                swap(currentId, largestChild);
+                currentId = largestChild;
+            }
+        }
+    }
+
+    public void heapifyUp(int startIndex) {
+        if (startIndex < 0 || startIndex >= getHeapSize()) {
+            throw new IllegalArgumentException("StartId cannot be negative or greater than heapSize");
+        }
+
+        int parentIndex = getParentIndex(startIndex);
+        int currentIndex = startIndex;
+
+        while (currentIndex > 0
+                && data.get(currentIndex).compareTo(data.get(parentIndex)) > 0) {
+            swap(currentIndex, parentIndex);
+            currentIndex = parentIndex;
+            parentIndex = getParentIndex(currentIndex);
+        }
+    }
+
+    public int getHeapSize() {
+        return this.data.size();
+    }
+
+    public T getMaximumElement() {
+        return data.get(0);
     }
 
     private int getLeftChildIndex(int index) {
@@ -64,14 +125,6 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         return (index - 1) / 2;
     }
 
-    private int getHeapSize() {
-        return this.data.size();
-    }
-
-    private int compareValues(int firstId, int secondId) {
-        return data.get(firstId).compareTo(data.get(secondId));
-    }
-
     private void swap(int firstId, int secondId) {
         if (firstId != secondId) {
             T firstValue = data.get(firstId);
@@ -79,4 +132,5 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
             data.set(secondId, firstValue);
         }
     }
+
 }

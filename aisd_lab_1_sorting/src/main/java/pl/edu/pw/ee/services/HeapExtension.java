@@ -2,7 +2,9 @@ package pl.edu.pw.ee.services;
 
 public interface HeapExtension {
 
-    public void build();
+    void build();
 
-    public void heapify(int startId, int endId);
+    void heapify(int startIndex, int endIndex);
+
+
 }

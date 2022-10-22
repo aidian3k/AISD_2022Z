@@ -9,13 +9,13 @@ import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
 
-public class QuickSortTest {
+public class HeapSortTest {
 
     private Sorting sortingMethod;
 
     @Before
     public void setUp() {
-        sortingMethod = new QuickSort();
+        sortingMethod = new HeapSort();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -189,7 +189,7 @@ public class QuickSortTest {
     @Test
     public void should_sortArrayCorrectly_when_arrayIsOptimistic() {
         //given
-        double[] nums = {5, 2, 3, 4, 1, 8, 7, 6, 9, 10};
+        double[] nums = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
         //when
         sortingMethod.sort(nums);
@@ -202,7 +202,7 @@ public class QuickSortTest {
     @Test
     public void should_sortArrayCorrectly_when_arrayIsPessimistic() {
         //given
-        double[] nums = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        double[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         //when
         sortingMethod.sort(nums);
