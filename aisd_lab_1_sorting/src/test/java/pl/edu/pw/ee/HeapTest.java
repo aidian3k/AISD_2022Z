@@ -3,14 +3,14 @@ package pl.edu.pw.ee;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class HeapTest {
 
-    private static final Random rnd = new Random();
+    private final int SEED = 1000;
+    private final Random rnd = new Random(SEED);
     private Heap<Double> heap;
 
     @Before
@@ -65,6 +65,64 @@ public class HeapTest {
         //then
         int expectedSize = 1;
         assertEquals(expectedSize, heap.getHeapSize());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_buildCorrectHeap_when_listIsNull() {
+        //when
+        Heap<Double> doubleHeap = new Heap<>(null);
+
+        //then
+        assert false;
+    }
+
+    @Test
+    public void should_buildCorrectHeap_when_listHasNoElements() {
+        //when
+        Heap<Double> doubleHeap = new Heap<>();
+        doubleHeap.build();
+
+        //then
+        assert true;
+    }
+
+    @Test
+    public void should_buildCorrectHeap_when_listHasOneElement() {
+        //given
+        List<Double> list = Collections.singletonList(1.0);
+
+        //when
+        Heap<Double> doubleHeap = new Heap<>(list);
+
+        //then
+        Double expectedMaxValue = 1.0;
+        assertEquals(expectedMaxValue, doubleHeap.getMaximumElement());
+    }
+
+    @Test
+    public void should_buildCorrectHeap_when_listHasTwoElements() {
+        //given
+        List<Double> list = Arrays.asList(1.0, 2.0);
+
+        //when
+        Heap<Double> doubleHeap = new Heap<>(list);
+
+        //then
+        Double expectedMaxValue = 2.0;
+        assertEquals(expectedMaxValue, doubleHeap.getMaximumElement());
+    }
+
+    @Test
+    public void should_buildCorrectHeap_when_listHasTwoEqualElements() {
+        //given
+        List<Double> list = Arrays.asList(1.0, 2.0, 2.0, 1.0);
+
+        //when
+        Heap<Double> doubleHeap = new Heap<>(list);
+
+        //then
+        Double expectedMaxValue = 2.0;
+        assertEquals(expectedMaxValue, doubleHeap.getMaximumElement());
     }
 
     @Test
@@ -137,9 +195,9 @@ public class HeapTest {
     @Test
     public void should_popMaxElement_when_insertingManyElements() {
         //given
-        final int SEED = 1000;
         int numberOfElements = 100_000;
 
+        //when
         Double[] nums = new Double[numberOfElements];
 
         for (int i = 0; i < nums.length; i++) {
@@ -156,6 +214,32 @@ public class HeapTest {
 
         assertEquals(expectedMaxValue, heap.getMaximumElement());
         assertEquals(expectedSize, heap.getHeapSize());
+    }
+
+    @Test
+    public void should_createCorrectHeapStructure_whenInsertingManyElements() {
+        //given
+        int numberOfElements = 100_000;
+
+        //when
+        Double[] numsSorted = new Double[numberOfElements];
+        List<Double> nums = new ArrayList<>();
+
+        for (int i = 0; i < numsSorted.length; i++) {
+            double generatedValue = rnd.nextDouble();
+            numsSorted[i] = generatedValue;
+            nums.add(generatedValue);
+        }
+
+        Arrays.sort(numsSorted);
+        Heap<Double> doubleHeap = new Heap<>(nums);
+
+        //then
+        int expectedSize = 100_000;
+        Double expectedMaxValue = numsSorted[numsSorted.length - 1];
+
+        assertEquals(expectedMaxValue, doubleHeap.getMaximumElement());
+        assertEquals(expectedSize, doubleHeap.getHeapSize());
     }
 
     @Test

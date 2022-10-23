@@ -17,7 +17,7 @@ public class SelectionSortPerformanceTest {
 
     private final int SEED = 1000;
     private final int MAX_ELEMENTS_TO_SORT = 250_000;
-    private final int NUMBER_OF_TIMES_TO_REPEAT = 2;
+    private final int NUMBER_OF_TIMES_TO_REPEAT = 3;
     private final int STEP = 500;
     private final PerformanceUtils performanceUtils = new PerformanceUtils();
     private int currentLength = 10_000;
@@ -151,7 +151,7 @@ public class SelectionSortPerformanceTest {
         String filePath = "src/test/java/pl/edu/pw/ee/PerformanceTests/TimeData/selectionSort/selectionSortPessimistic.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(filePath));
 
-        for (int i = 0; i <= MAX_ELEMENTS_TO_SORT; i += STEP) {
+        for (int i = 0; i <= 150_000; i += STEP) {
             currentLength = i;
             long[] repeatTimeSaver = new long[NUMBER_OF_TIMES_TO_REPEAT];
 

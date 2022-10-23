@@ -153,7 +153,7 @@ public class QuickSortPerformanceTest {
 
         for (int i = 0; i <= MAX_ELEMENTS_TO_SORT; i += STEP) {
             currentLength = i;
-            long[] repeatTimeSaver = new long[3];
+            long[] repeatTimeSaver = new long[2];
 
             for (int j = 0; j < 2; j++) {
                 setUpPessimisticCase();

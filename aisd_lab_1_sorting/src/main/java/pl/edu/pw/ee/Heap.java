@@ -50,6 +50,10 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     @Override
     public void build() {
+        if (data == null) {
+            throw new IllegalArgumentException("Given list cannot be null!");
+        }
+
         int n = data.size();
 
         for (int i = n / 2 - 1; i >= 0; i--) {
@@ -70,15 +74,7 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
             int rightChild = getRightChildIndex(currentId);
             int largestChild = currentId;
 
-            if (leftChild < endId
-                    && data.get(leftChild).compareTo(data.get(largestChild)) > 0) {
-                largestChild = leftChild;
-            }
-
-            if (rightChild < endId
-                    && data.get(rightChild).compareTo(data.get(largestChild)) > 0) {
-                largestChild = rightChild;
-            }
+            largestChild = getLargestChild(endId, leftChild, rightChild, largestChild);
 
             if (largestChild == currentId) {
                 return;
@@ -97,8 +93,7 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         int parentIndex = getParentIndex(startIndex);
         int currentIndex = startIndex;
 
-        while (currentIndex > 0
-                && data.get(currentIndex).compareTo(data.get(parentIndex)) > 0) {
+        while (currentIndex > 0 && data.get(currentIndex).compareTo(data.get(parentIndex)) > 0) {
             swap(currentIndex, parentIndex);
             currentIndex = parentIndex;
             parentIndex = getParentIndex(currentIndex);
@@ -123,6 +118,18 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     private int getParentIndex(int index) {
         return (index - 1) / 2;
+    }
+
+    private int getLargestChild(int endId, int leftChild, int rightChild, int largestChild) {
+        if (leftChild < endId && data.get(leftChild).compareTo(data.get(largestChild)) > 0) {
+            largestChild = leftChild;
+        }
+
+        if (rightChild < endId && data.get(rightChild).compareTo(data.get(largestChild)) > 0) {
+            largestChild = rightChild;
+        }
+
+        return largestChild;
     }
 
     private void swap(int firstId, int secondId) {
