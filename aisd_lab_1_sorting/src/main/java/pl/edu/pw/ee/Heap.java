@@ -12,6 +12,7 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     public Heap(List<T> data) {
         this.data = data;
+        validateData(data);
         this.build();
     }
 
@@ -50,10 +51,6 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     @Override
     public void build() {
-        if (data == null) {
-            throw new IllegalArgumentException("Given list cannot be null!");
-        }
-
         int n = data.size();
 
         for (int i = n / 2 - 1; i >= 0; i--) {
@@ -63,9 +60,7 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     @Override
     public void heapify(int startId, int endId) {
-        if (startId < 0 || endId < 0) {
-            throw new IllegalArgumentException("The startId and endId must be positive values");
-        }
+        validateHeapifyData(startId, endId);
 
         int currentId = startId;
 
@@ -118,6 +113,30 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     private int getParentIndex(int index) {
         return (index - 1) / 2;
+    }
+
+    private void validateData(List<T> data) {
+        if (data == null) {
+            throw new IllegalArgumentException("Given list cannot be null!");
+        }
+
+        for (T item : data) {
+            if (item == null) {
+                throw new IllegalArgumentException("Element in the list cannot be null!");
+            }
+        }
+    }
+
+    private void validateHeapifyData(int startId, int endId) {
+        int heapSize = getHeapSize();
+
+        if (startId < 0 || endId < 0) {
+            throw new IllegalArgumentException("The startId and endId must be positive values");
+        } else if (endId > heapSize) {
+            throw new IllegalArgumentException("EndId cannot be greater than heapSize!");
+        } else if (startId >= endId) {
+            throw new IllegalArgumentException("EndId must be greater than startId");
+        }
     }
 
     private int getLargestChild(int endId, int leftChild, int rightChild, int largestChild) {

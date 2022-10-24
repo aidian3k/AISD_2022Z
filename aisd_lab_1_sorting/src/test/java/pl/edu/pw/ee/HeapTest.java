@@ -3,7 +3,11 @@ package pl.edu.pw.ee;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,8 +24,6 @@ public class HeapTest {
 
     @Test(expected = IllegalStateException.class)
     public void should_throwAnException_when_tryToPopFromEmptyHeap() {
-        //given
-
         //when
         heap.pop();
 
@@ -42,6 +44,59 @@ public class HeapTest {
     public void should_throwAnException_when_heapifyStartIndexAndEndIndexAreNegative() {
         //when
         heap.heapify(-1, -3);
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_startIdAndEndIdAreGreaterThanHeapSize() {
+        //when
+        heap.heapify(5, 6);
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_EndIdIsGreaterThanHeapSize() {
+        //when
+        heap.heapify(0, 5);
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_startIdIsGreaterThanEndId() {
+        //when
+        heap.heapify(1, 0);
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_oneElementInTheListIsNull() {
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, null, 5);
+
+        //when
+        Heap<Integer> integerHeap = new Heap<>(list);
+        integerHeap.build();
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_twoElementsAreNull() {
+        //given
+        List<Integer> list = Arrays.asList(1, 2, null, 4, null, 5);
+
+        //when
+        Heap<Integer> integerHeap = new Heap<>(list);
+        integerHeap.build();
 
         //then
         assert false;
@@ -68,9 +123,10 @@ public class HeapTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_buildCorrectHeap_when_listIsNull() {
+    public void should_throwAnException_when_listIsNull() {
         //when
         Heap<Double> doubleHeap = new Heap<>(null);
+        doubleHeap.build();
 
         //then
         assert false;

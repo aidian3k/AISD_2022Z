@@ -48,6 +48,7 @@ public class HeapSortPerformanceTest {
         expectedOptimisticArray = performanceUtils.createRandomArray(currentLength, randomExpected);
 
         Arrays.sort(optimisticArray);
+        performanceUtils.reverseArray(optimisticArray);
         Arrays.sort(expectedOptimisticArray);
     }
 
@@ -72,7 +73,6 @@ public class HeapSortPerformanceTest {
         expectedPessimisticArray = performanceUtils.createRandomArray(currentLength, randomExpected);
 
         Arrays.sort(pessimisticArray);
-        performanceUtils.reverseArray(pessimisticArray);
         Arrays.sort(expectedPessimisticArray);
     }
 
