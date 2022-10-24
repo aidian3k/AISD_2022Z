@@ -88,7 +88,8 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         int parentIndex = getParentIndex(startIndex);
         int currentIndex = startIndex;
 
-        while (currentIndex > 0 && data.get(currentIndex).compareTo(data.get(parentIndex)) > 0) {
+        while (currentIndex > 0
+                && data.get(currentIndex).compareTo(data.get(parentIndex)) > 0) {
             swap(currentIndex, parentIndex);
             currentIndex = parentIndex;
             parentIndex = getParentIndex(currentIndex);
@@ -140,11 +141,13 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
     }
 
     private int getLargestChild(int endId, int leftChild, int rightChild, int largestChild) {
-        if (leftChild < endId && data.get(leftChild).compareTo(data.get(largestChild)) > 0) {
+        if (leftChild < endId
+                && data.get(leftChild).compareTo(data.get(largestChild)) > 0) {
             largestChild = leftChild;
         }
 
-        if (rightChild < endId && data.get(rightChild).compareTo(data.get(largestChild)) > 0) {
+        if (rightChild < endId
+                && data.get(rightChild).compareTo(data.get(largestChild)) > 0) {
             largestChild = rightChild;
         }
 
