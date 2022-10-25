@@ -2,3 +2,4 @@
 .idea
 .DS_STORE
 *.iml
+/aisd_lab_3_hash_table/target/
