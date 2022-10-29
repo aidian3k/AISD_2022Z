@@ -16,8 +16,8 @@ import static pl.edu.pw.ee.Performance.WriterMode.PRIMES;
 
 public class PerformanceTest {
     private static final int TIMES_TO_REPEAT = 30;
-    private static final int[] PERFORMANCE_PRIME_SIZES = {4093, 6427, 16427, 28723, 49157, 100459, 262147};
-    private static final int[] PERFORMANCE_POWER2_SIZES = {4096, 8192, 24659, 32768, 65536, 131072, 262144};
+    private static final int[] PERFORMANCE_PRIME_SIZES = {4093, 6427, 12289, 24593, 49157, 100459, 262147};
+    private static final int[] PERFORMANCE_POWER2_SIZES = {4096, 8192, 16384, 32768, 65536, 131072, 262144};
     private String[] wordList;
     private FileHandler fileHandler;
     private HashListChaining<String> hashListChaining;
@@ -41,19 +41,17 @@ public class PerformanceTest {
     }
 
     private void generateResults(WriterMode mode, int[] sizesArray) throws IOException {
-        int currentSize;
         ArrayList<Long> singleResults = new ArrayList<>();
 
         for (int performanceSize : sizesArray) {
-            currentSize = performanceSize;
-            hashListChaining = new HashListChaining<>(currentSize);
+            hashListChaining = new HashListChaining<>(performanceSize);
             addWordsToHashList();
 
             for (int repeat = 0; repeat < TIMES_TO_REPEAT; repeat++) {
                 singleResults.add(calculateSingleTime());
             }
 
-            addAverageTimeToResults(currentSize, singleResults);
+            addAverageTimeToResults(performanceSize, singleResults);
             singleResults.clear();
         }
 
@@ -75,13 +73,13 @@ public class PerformanceTest {
     }
 
     private Long calculateSingleTime() {
-        Long startingTime = System.nanoTime();
+        Long startingTime = System.currentTimeMillis();
 
         for (String word : wordList) {
             hashListChaining.get(word);
         }
 
-        Long endingTime = System.nanoTime();
+        Long endingTime = System.currentTimeMillis();
 
         return endingTime - startingTime;
     }

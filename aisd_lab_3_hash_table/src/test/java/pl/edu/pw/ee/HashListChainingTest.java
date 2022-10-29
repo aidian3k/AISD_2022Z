@@ -27,7 +27,7 @@ public class HashListChainingTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_createHashList_when_initialSizeIsZero() {
+    public void should_throwAnException_when_initialSizeIsZero() {
         //when
         hashListChaining = new HashListChaining<>(0);
 
@@ -46,7 +46,7 @@ public class HashListChainingTest {
     }
 
     @Test
-    public void should_correctlyAddElementToList_when_tryingToAddOneElement() {
+    public void should_correctlyAddElementToHash_when_tryingToAddOneElement() {
         //when
         hashListChaining = new HashListChaining<>(1);
         hashListChaining.add(1);
@@ -191,6 +191,7 @@ public class HashListChainingTest {
     @Test(expected = IllegalArgumentException.class)
     public void should_throwAnException_when_tryingToDeleteNullValue() {
         //when
+        hashListChaining.add(1);
         hashListChaining.delete(null);
 
         //then
@@ -317,6 +318,20 @@ public class HashListChainingTest {
 
         assertEquals(expectedSize, stringHashListChaining.getNumberOfElements());
         assertEquals(expectedList, stringList);
+    }
+
+    @Test
+    public void should_returnCorrectLoadFactor_when_fourElementsAreInTheHash() {
+        //given
+        Integer[] nums = {1, 2, 3, 4};
+
+        //when
+        hashListChaining = new HashListChaining<>(16);
+        addElementsToHash(nums);
+
+        //then
+        double expected = 0.25;
+        assertEquals(expected, hashListChaining.countLoadFactor(), 0);
     }
 
     private void addElementsToHash(Integer[] nums) {

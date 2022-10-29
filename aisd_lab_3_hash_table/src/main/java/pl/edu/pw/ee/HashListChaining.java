@@ -23,7 +23,6 @@ public class HashListChaining<T extends Comparable<T>> implements HashTable<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public HashListChaining(int size) {
         validateConstructorData(size);
         this.hashElems = (Elem[]) Array.newInstance(Elem.class, size);
