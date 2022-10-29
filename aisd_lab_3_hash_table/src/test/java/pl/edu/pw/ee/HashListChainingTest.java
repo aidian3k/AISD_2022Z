@@ -311,7 +311,7 @@ public class HashListChainingTest {
 
         //then
         int expectedSize = 1;
-        List<Integer> expectedList = Arrays.asList(1);
+        List<Integer> expectedList = Collections.singletonList(1);
 
         assertEquals(expectedSize, hashListChaining.getNumberOfElements());
         assertEquals(expectedList, numsList);
