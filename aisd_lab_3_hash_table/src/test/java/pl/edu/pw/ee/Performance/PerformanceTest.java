@@ -31,7 +31,7 @@ public class PerformanceTest {
     }
 
     @Test
-    public void wordsPrimePerformanceTest() throws IOException {
+    public void primePerformanceTest() throws IOException {
         generateResults(PRIMES, PERFORMANCE_PRIME_SIZES);
     }
 
