@@ -300,6 +300,24 @@ public class HashListChainingTest {
     }
 
     @Test
+    public void should_reactCorrectly_when_tryingToAddAndThenDeleteElement() {
+        //when
+        hashListChaining = new HashListChaining<>(1);
+        hashListChaining.add(1);
+        hashListChaining.delete(1);
+        hashListChaining.add(1);
+
+        List<Integer> numsList = hashListChaining.getListElementsAtIndex(0);
+
+        //then
+        int expectedSize = 1;
+        List<Integer> expectedList = Arrays.asList(1);
+
+        assertEquals(expectedSize, hashListChaining.getNumberOfElements());
+        assertEquals(expectedList, numsList);
+    }
+
+    @Test
     public void should_reactCorrectly_when_tryingToHaveStringHashList() {
         //given
         String[] strings = {"Adrian", "Jakub", "Pawel"};
