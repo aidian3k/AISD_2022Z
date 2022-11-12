@@ -1,6 +1,6 @@
 package pl.edu.pw.ee;
 
-public class HashLinearProbing<T extends Comparable<T>> extends HashOpenAdressing<T> {
+public class HashLinearProbing<T extends Comparable<T>> extends HashOpenAddressing<T> {
 
     public HashLinearProbing() {
         super();
@@ -14,10 +14,14 @@ public class HashLinearProbing<T extends Comparable<T>> extends HashOpenAdressin
     int hashFunc(int key, int i) {
         int m = getSize();
 
-        int hash = (key % m + i) % m;
+        int hash = (helpHashFunction(key, m) + i) % m;
 
         hash = hash < 0 ? -hash : hash;
 
         return hash;
+    }
+
+    private int helpHashFunction(int key, int m) {
+        return key % m;
     }
 }

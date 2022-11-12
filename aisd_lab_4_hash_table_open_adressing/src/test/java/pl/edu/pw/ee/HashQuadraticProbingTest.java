@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HashLinearProbingTest {
+public class HashQuadraticProbingTest {
 
     private HashOpenAddressing<Integer> integerHashOpenAddressing;
     private HashOpenAddressing<String> stringHashOpenAddressing;
@@ -18,9 +18,51 @@ public class HashLinearProbingTest {
 
     @Before
     public void setUp() {
-        integerHashOpenAddressing = new HashLinearProbing<>(1);
-        stringHashOpenAddressing = new HashLinearProbing<>(1);
-        elemHashOpenAddressing = new HashLinearProbing<>(1);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(1, 0.5, 0.5);
+        stringHashOpenAddressing = new HashQuadraticProbing<>(1, 0.5, 0.5);
+        elemHashOpenAddressing = new HashQuadraticProbing<>(1, 0.5, 0.5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_constantValuesAreNegative() {
+        //given
+        double a = -1;
+        double b = -3;
+        int initialSize = 100;
+
+        //when
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, a, b);
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_constantValuesAreZero() {
+        //given
+        double a = 0;
+        double b = -3;
+        int initialSize = 100;
+
+        //when
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, a, b);
+
+        //then
+        assert false;
+    }
+
+    @Test
+    public void should_createHashCorrectly_when_constantValuesArePositive() {
+        //given
+        double a = 0.5;
+        double b = 1.5;
+        int initialSize = 100;
+
+        //when
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, a, b);
+
+        //then
+        assert true;
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -29,7 +71,7 @@ public class HashLinearProbingTest {
         int initialSize = -1;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, 0.5, 0.5);
 
         //then
         assert false;
@@ -41,7 +83,7 @@ public class HashLinearProbingTest {
         int initialSize = 0;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, 0.5, 0.5);
 
         //then
         assert false;
@@ -53,7 +95,7 @@ public class HashLinearProbingTest {
         int initialSize = 5;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, 0.5, 0.5);
 
         //then
         assert true;
@@ -62,7 +104,7 @@ public class HashLinearProbingTest {
     @Test
     public void should_createHashCorrectly_when_baseConstructorIsCalled() {
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>();
+        integerHashOpenAddressing = new HashQuadraticProbing<>();
 
         //then
         int expectedSize = 2039;
@@ -77,7 +119,7 @@ public class HashLinearProbingTest {
         int initialSize = 100;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, 0.5, 0.5);
         int hashIndex = integerHashOpenAddressing.hashFunc(key, 0);
 
         //then
@@ -93,7 +135,7 @@ public class HashLinearProbingTest {
         int initialSize = 100;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashQuadraticProbing<>(initialSize, 0.5, 0.5);
         int hashIndex = integerHashOpenAddressing.hashFunc(key, 0);
 
         //then
@@ -232,7 +274,7 @@ public class HashLinearProbingTest {
         int testSize = 100;
 
         //when
-        for(int i = 0 ; i < testSize; ++i) {
+        for (int i = 0; i < testSize; ++i) {
             integerHashOpenAddressing.put(i);
         }
 

@@ -1,8 +1,11 @@
-package pl.edu.pw.ee.Performance;
+package pl.edu.pw.ee.performance;
 
 import org.junit.Before;
 import org.junit.Test;
-import pl.edu.pw.ee.HashListChaining;
+import pl.edu.pw.ee.HashDoubleHashing;
+import pl.edu.pw.ee.HashLinearProbing;
+import pl.edu.pw.ee.HashOpenAddressing;
+import pl.edu.pw.ee.HashQuadraticProbing;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,16 +14,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static pl.edu.pw.ee.Performance.WriterMode.POWER2;
-import static pl.edu.pw.ee.Performance.WriterMode.PRIMES;
+import static pl.edu.pw.ee.performance.WriterMode.*;
 
 public class PerformanceTest {
     private static final int TIMES_TO_REPEAT = 30;
-    private static final int[] PERFORMANCE_PRIME_SIZES = {4093, 6427, 12289, 24593, 49157, 100459, 262147};
-    private static final int[] PERFORMANCE_POWER2_SIZES = {4096, 8192, 16384, 32768, 65536, 131072, 262144};
+    private static final int[] PERFORMANCE_SIZES = {512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144};
     private String[] wordList;
     private FileHandler fileHandler;
-    private HashListChaining<String> hashListChaining;
+    private HashOpenAddressing<String> hashOpenAddressing;
     private Map<Integer, Long> results;
 
     @Before
@@ -31,23 +32,26 @@ public class PerformanceTest {
     }
 
     @Test
-    public void primePerformanceTest() throws IOException {
-        generateResults(PRIMES, PERFORMANCE_PRIME_SIZES);
+    public void linearPerformanceTest() throws IOException {
+        generateResults(LINEAR);
     }
 
     @Test
-    public void powerOfTwoPerformanceTest() throws IOException {
-        generateResults(POWER2, PERFORMANCE_POWER2_SIZES);
+    public void quadraticPerformanceTest() throws IOException {
+        generateResults(QUADRATIC);
     }
 
-    private void generateResults(WriterMode mode, int[] sizesArray) throws IOException {
+    @Test
+    public void doublePerformanceTest() throws IOException {
+        generateResults(DOUBLE);
+    }
+
+    private void generateResults(WriterMode mode) throws IOException {
         ArrayList<Long> singleResults = new ArrayList<>();
 
-        for (int performanceSize : sizesArray) {
-            hashListChaining = new HashListChaining<>(performanceSize);
-            addWordsToHashList();
-
+        for (int performanceSize : PERFORMANCE_SIZES) {
             for (int repeat = 0; repeat < TIMES_TO_REPEAT; repeat++) {
+                hashOpenAddressing = initializeHashList(mode, performanceSize);
                 singleResults.add(calculateSingleTime());
             }
 
@@ -58,9 +62,13 @@ public class PerformanceTest {
         fileHandler.writeResultsToFile(results, mode);
     }
 
-    private void addWordsToHashList() {
-        for (String word : wordList) {
-            hashListChaining.add(word);
+    private HashOpenAddressing<String> initializeHashList(WriterMode mode, int performanceSize) {
+        if (mode.equals(LINEAR)) {
+            return new HashLinearProbing<>(performanceSize);
+        } else if (mode.equals(QUADRATIC)) {
+            return new HashQuadraticProbing<>(performanceSize, 0.5, 0.5);
+        } else {
+            return new HashDoubleHashing<>(performanceSize);
         }
     }
 
@@ -76,7 +84,7 @@ public class PerformanceTest {
         long startingTime = System.currentTimeMillis();
 
         for (String word : wordList) {
-            hashListChaining.get(word);
+            hashOpenAddressing.put(word);
         }
 
         long endingTime = System.currentTimeMillis();
@@ -94,5 +102,4 @@ public class PerformanceTest {
 
         return currentSum / n;
     }
-
 }

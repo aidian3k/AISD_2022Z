@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HashLinearProbingTest {
+public class HashDoubleHashingTest {
 
     private HashOpenAddressing<Integer> integerHashOpenAddressing;
     private HashOpenAddressing<String> stringHashOpenAddressing;
@@ -18,9 +18,21 @@ public class HashLinearProbingTest {
 
     @Before
     public void setUp() {
-        integerHashOpenAddressing = new HashLinearProbing<>(1);
-        stringHashOpenAddressing = new HashLinearProbing<>(1);
-        elemHashOpenAddressing = new HashLinearProbing<>(1);
+        integerHashOpenAddressing = new HashDoubleHashing<>(1);
+        stringHashOpenAddressing = new HashDoubleHashing<>(1);
+        elemHashOpenAddressing = new HashDoubleHashing<>(1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_initialSizeIsThree() {
+        //given
+        int initialSize = 3;
+
+        //when
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
+
+        //then
+        assert false;
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -29,7 +41,7 @@ public class HashLinearProbingTest {
         int initialSize = -1;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
 
         //then
         assert false;
@@ -41,7 +53,7 @@ public class HashLinearProbingTest {
         int initialSize = 0;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
 
         //then
         assert false;
@@ -53,7 +65,7 @@ public class HashLinearProbingTest {
         int initialSize = 5;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
 
         //then
         assert true;
@@ -62,7 +74,7 @@ public class HashLinearProbingTest {
     @Test
     public void should_createHashCorrectly_when_baseConstructorIsCalled() {
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>();
+        integerHashOpenAddressing = new HashDoubleHashing<>();
 
         //then
         int expectedSize = 2039;
@@ -77,7 +89,7 @@ public class HashLinearProbingTest {
         int initialSize = 100;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
         int hashIndex = integerHashOpenAddressing.hashFunc(key, 0);
 
         //then
@@ -93,7 +105,7 @@ public class HashLinearProbingTest {
         int initialSize = 100;
 
         //when
-        integerHashOpenAddressing = new HashLinearProbing<>(initialSize);
+        integerHashOpenAddressing = new HashDoubleHashing<>(initialSize);
         int hashIndex = integerHashOpenAddressing.hashFunc(key, 0);
 
         //then
