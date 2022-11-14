@@ -232,7 +232,7 @@ public class HashLinearProbingTest {
         int testSize = 100;
 
         //when
-        for(int i = 0 ; i < testSize; ++i) {
+        for (int i = 0; i < testSize; ++i) {
             integerHashOpenAddressing.put(i);
         }
 
@@ -525,7 +525,7 @@ public class HashLinearProbingTest {
     }
 
     @Test
-    public void should_correctlyPutElements_when_allElementsInTheHashWereDeleted() {
+    public void should_correctlyPutIntegerElements_when_allElementsInTheHashWereDeleted() {
         //given
         int testSize = 10_000;
 
@@ -547,6 +547,36 @@ public class HashLinearProbingTest {
         assertEquals(expectedNumberOfElements, integerHashOpenAddressing.getNumberOfElems());
     }
 
+    @Test
+    public void should_correctlyPutDifferentStringElements_when_allElementsInTheHashWereDeleted() {
+        //given
+        String currentString = "";
+        int testSize = 10_000;
+
+        //when
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.put(currentString);
+            currentString += "aba";
+        }
+
+        currentString = "";
+
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.delete(currentString);
+            currentString += "aba";
+        }
+
+        currentString = "";
+
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.put(currentString);
+            currentString += "aba";
+        }
+
+        //then
+        int expectedNumberOfElements = 10_000;
+        assertEquals(expectedNumberOfElements, stringHashOpenAddressing.getNumberOfElems());
+    }
 
     private static class Elem implements Comparable<Elem> {
         Integer key;

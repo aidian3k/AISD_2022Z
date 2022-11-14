@@ -4,7 +4,6 @@ import pl.edu.pw.ee.services.HashTable;
 
 import java.util.Arrays;
 
-@SuppressWarnings("unchecked")
 public abstract class HashOpenAddressing<T extends Comparable<T>> implements HashTable<T> {
 
     private final T nil = null;

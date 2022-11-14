@@ -589,6 +589,36 @@ public class HashQuadraticProbingTest {
         assertEquals(expectedNumberOfElements, integerHashOpenAddressing.getNumberOfElems());
     }
 
+    @Test
+    public void should_correctlyPutDifferentStringElements_when_allElementsInTheHashWereDeleted() {
+        //given
+        String currentString = "";
+        int testSize = 10_000;
+
+        //when
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.put(currentString);
+            currentString += "aba";
+        }
+
+        currentString = "";
+
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.delete(currentString);
+            currentString += "aba";
+        }
+
+        currentString = "";
+
+        for (int i = 0; i < testSize; ++i) {
+            stringHashOpenAddressing.put(currentString);
+            currentString += "aba";
+        }
+
+        //then
+        int expectedNumberOfElements = 10_000;
+        assertEquals(expectedNumberOfElements, stringHashOpenAddressing.getNumberOfElems());
+    }
 
     private static class Elem implements Comparable<Elem> {
         Integer key;

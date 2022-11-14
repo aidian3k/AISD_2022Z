@@ -31,7 +31,7 @@ public class HashDoubleHashing<T extends Comparable<T>> extends HashOpenAddressi
     }
 
     private void validateInputSize(int size) {
-        if(size < 1  || size == 3) {
+        if (size < 1 || size == 3) {
             throw new IllegalArgumentException("Initial size of hash table cannot be lower than 1 or equal 3!");
         }
     }
