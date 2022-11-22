@@ -1,10 +1,11 @@
 package pl.edu.pw.ee;
 
+import static pl.edu.pw.ee.Color.BLACK;
 import static pl.edu.pw.ee.Color.RED;
 
 public class Node<K extends Comparable<K>, V> {
 
-    private K key;
+    private final K key;
     private V value;
     private Node<K, V> left, right;
     private Color color;
@@ -19,16 +20,24 @@ public class Node<K extends Comparable<K>, V> {
         return RED.equals(color);
     }
 
+    public void changeColor() {
+        if (isRed()) {
+            this.color = BLACK;
+        } else {
+            this.color = RED;
+        }
+    }
+
     public K getKey() {
         return key;
     }
 
-    public void setValue(V value) {
-        this.value = value;
-    }
-
     public V getValue() {
         return value;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
     }
 
     public Node<K, V> getLeft() {
