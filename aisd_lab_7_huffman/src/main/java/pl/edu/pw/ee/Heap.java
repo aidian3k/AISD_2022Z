@@ -10,12 +10,6 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     private final List<T> data;
 
-    public Heap(List<T> data) {
-        this.data = data;
-        validateData(data);
-        this.build();
-    }
-
     public Heap() {
         this.data = new ArrayList<>();
     }
@@ -97,10 +91,6 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
 
     public int getHeapSize() {
         return this.data.size();
-    }
-
-    public T getMaximumElement() {
-        return data.get(0);
     }
 
     private int getLeftChildIndex(int index) {

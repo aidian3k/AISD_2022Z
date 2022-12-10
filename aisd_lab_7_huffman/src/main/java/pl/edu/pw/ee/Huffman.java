@@ -1,27 +1,35 @@
 package pl.edu.pw.ee;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Huffman {
-    public static void main(String... args) throws IOException {
-        Huffman huffman = new Huffman();
-        huffman.huffman("/Users/aidian3k/2022Z_AISD_git_lab_GR4_gr13/aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/results/compressedFile.txt", false);
-    }
 
     public int huffman(String pathToRootDir, boolean compress) throws IOException {
-        FileHandler reader = new FileHandler(pathToRootDir);
+        FileHandler reader;
         HuffmanTree huffmanTree;
+        int counter;
 
         if (compress) {
+            reader = new FileHandler(pathToRootDir, compress);
             List<Node> nodeList = reader.readFrequencyOfSingleCharacters();
-            huffmanTree = new HuffmanTree(nodeList);
-            huffmanTree.encodeFile(pathToRootDir);
+            huffmanTree = new HuffmanTree(nodeList, pathToRootDir);
+            counter = huffmanTree.encodeFile();
         } else {
-            huffmanTree = new HuffmanTree();
-            huffmanTree.decodeFile(pathToRootDir);
+            reader = new FileHandler(pathToRootDir, compress);
+            List<Character> listOfChars = new ArrayList<>();
+            HashMap<Character, String> codes = reader.readCharacterCodesFromFile(listOfChars);
+            huffmanTree = new HuffmanTree(codes, listOfChars, pathToRootDir);
+            counter = huffmanTree.decodeFile();
         }
 
-        return 0;
+        return counter;
+    }
+
+    public static void main(String... args) throws IOException {
+        Huffman huffman = new Huffman();
+        System.out.println(huffman.huffman("aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/results", true));
     }
 }
