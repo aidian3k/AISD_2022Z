@@ -11,15 +11,19 @@ import java.util.List;
 
 public class FileHandler {
     private final BufferedReader reader;
+    private final boolean isCompressing;
 
     public FileHandler(String pathToRootDir, boolean compress) throws IOException {
         validateInput(pathToRootDir, compress);
 
+        this.isCompressing = compress;
         String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
         this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.UTF_8));
     }
 
     public List<Node> readFrequencyOfSingleCharacters() throws IOException {
+        validateCompressionUsage();
+
         List<Node> currentChars = new ArrayList<>();
         int characterReader;
 
@@ -41,6 +45,8 @@ public class FileHandler {
     }
 
     public HashMap<Character, String> readCharacterCodesFromFile(List<Character> listOfChars) throws IOException {
+        validateDeCompressionUsage();
+
         String line;
         HashMap<Character, String> codes = new HashMap<>();
 
@@ -72,6 +78,18 @@ public class FileHandler {
         return properNode;
     }
 
+    private void validateCompressionUsage() {
+        if (!isCompressing) {
+            throw new IllegalArgumentException("This method is only accessible when compressingFile!");
+        }
+    }
+
+    private void validateDeCompressionUsage() {
+        if (isCompressing) {
+            throw new IllegalArgumentException("This method is only accessible when decompressingFile!");
+        }
+    }
+
     private void validateInput(String pathToRootDir, boolean compress) throws IOException {
         if (pathToRootDir == null) {
             throw new IllegalArgumentException("PathToRootDir argument cannot be null!");
@@ -98,10 +116,8 @@ public class FileHandler {
         }
     }
 
-    private void validateCompression(String pathToRootDir) throws IOException {
+    private void validateCompression(String pathToRootDir) {
         File decompressedFile = new File(pathToRootDir + "/decompressedFile.txt");
-        File compressedFile = new File(pathToRootDir + "/compressedFile.txt");
-        File keysFile = new File(pathToRootDir + "/keys.txt");
 
         if (!decompressedFile.exists()) {
             throw new IllegalArgumentException("DecompressedFile.txt does not exist in leading directory!");
@@ -115,36 +131,18 @@ public class FileHandler {
             throw new IllegalArgumentException("Cannot compress file, which you cannot read from!");
         }
 
-        if (!keysFile.exists() || !compressedFile.exists()) {
-            if (!keysFile.createNewFile() || !compressedFile.createNewFile()) {
-                throw new IllegalArgumentException("Cannot create keysFile.txt and compressedFile.txt!");
-            }
-        }
-
-        if (!keysFile.canWrite() && !compressedFile.canWrite()) {
-            throw new IllegalArgumentException("Cannot write to vital files when compressing!");
-        }
     }
 
-    private void validateDecompression(String pathToRootDir) throws IOException {
-        File decompressedFile = new File(pathToRootDir + "/decompressedFile.txt");
+    private void validateDecompression(String pathToRootDir) {
         File compressedFile = new File(pathToRootDir + "/compressedFile.txt");
         File keysFile = new File(pathToRootDir + "/keys.txt");
 
-
-        if(!keysFile.exists() || !compressedFile.exists()) {
-            throw new IllegalArgumentException("Decompression cannot be done without keys and decompressed files");
+        if (!keysFile.exists() || !compressedFile.exists()) {
+            throw new IllegalArgumentException("Decompression cannot be done without keys and compressed files");
         }
 
-        if(!keysFile.canRead() || !compressedFile.canRead()) {
+        if (!keysFile.canRead() || !compressedFile.canRead()) {
             throw new IllegalArgumentException("Cannot read from keys and compressedFile when decompressing!");
         }
-
-        if(!decompressedFile.exists()) {
-            if(decompressedFile.createNewFile()) {
-                throw new IllegalArgumentException("Cannot create decompressedFile.txt!");
-            }
-        }
-
     }
 }
