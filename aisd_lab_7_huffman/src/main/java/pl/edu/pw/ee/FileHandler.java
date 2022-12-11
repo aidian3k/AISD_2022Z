@@ -1,6 +1,7 @@
 package pl.edu.pw.ee;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,8 +13,10 @@ public class FileHandler {
     private final BufferedReader reader;
 
     public FileHandler(String pathToRootDir, boolean compress) throws IOException {
-        String nameOfFile = compress ? pathToRootDir + "/sampleFile.txt" : pathToRootDir + "/keys.txt";
-        this.reader = new BufferedReader(new FileReader(nameOfFile, StandardCharsets.UTF_8));
+        validateInput(pathToRootDir, compress);
+
+        String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
+        this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.UTF_8));
     }
 
     public List<Node> readFrequencyOfSingleCharacters() throws IOException {
@@ -67,5 +70,81 @@ public class FileHandler {
         }
 
         return properNode;
+    }
+
+    private void validateInput(String pathToRootDir, boolean compress) throws IOException {
+        if (pathToRootDir == null) {
+            throw new IllegalArgumentException("PathToRootDir argument cannot be null!");
+        }
+
+        File directoryToRead = new File(pathToRootDir);
+
+        if (!directoryToRead.exists()) {
+            throw new IllegalArgumentException("Cannot read from directory, which does not exist!");
+        }
+
+        if (!directoryToRead.isDirectory()) {
+            throw new IllegalArgumentException("Given path must lead to the directory!");
+        }
+
+        if (!directoryToRead.canRead()) {
+            throw new IllegalArgumentException("Cannot do anything from directory, from which you cannot read!");
+        }
+
+        if (compress) {
+            validateCompression(pathToRootDir);
+        } else {
+            validateDecompression(pathToRootDir);
+        }
+    }
+
+    private void validateCompression(String pathToRootDir) throws IOException {
+        File decompressedFile = new File(pathToRootDir + "/decompressedFile.txt");
+        File compressedFile = new File(pathToRootDir + "/compressedFile.txt");
+        File keysFile = new File(pathToRootDir + "/keys.txt");
+
+        if (!decompressedFile.exists()) {
+            throw new IllegalArgumentException("DecompressedFile.txt does not exist in leading directory!");
+        }
+
+        if (!decompressedFile.isFile()) {
+            throw new IllegalArgumentException("DecompressedFile.txt must be a file!");
+        }
+
+        if (!decompressedFile.canRead()) {
+            throw new IllegalArgumentException("Cannot compress file, which you cannot read from!");
+        }
+
+        if (!keysFile.exists() || !compressedFile.exists()) {
+            if (!keysFile.createNewFile() || !compressedFile.createNewFile()) {
+                throw new IllegalArgumentException("Cannot create keysFile.txt and compressedFile.txt!");
+            }
+        }
+
+        if (!keysFile.canWrite() && !compressedFile.canWrite()) {
+            throw new IllegalArgumentException("Cannot write to vital files when compressing!");
+        }
+    }
+
+    private void validateDecompression(String pathToRootDir) throws IOException {
+        File decompressedFile = new File(pathToRootDir + "/decompressedFile.txt");
+        File compressedFile = new File(pathToRootDir + "/compressedFile.txt");
+        File keysFile = new File(pathToRootDir + "/keys.txt");
+
+
+        if(!keysFile.exists() || !compressedFile.exists()) {
+            throw new IllegalArgumentException("Decompression cannot be done without keys and decompressed files");
+        }
+
+        if(!keysFile.canRead() || !compressedFile.canRead()) {
+            throw new IllegalArgumentException("Cannot read from keys and compressedFile when decompressing!");
+        }
+
+        if(!decompressedFile.exists()) {
+            if(decompressedFile.createNewFile()) {
+                throw new IllegalArgumentException("Cannot create decompressedFile.txt!");
+            }
+        }
+
     }
 }

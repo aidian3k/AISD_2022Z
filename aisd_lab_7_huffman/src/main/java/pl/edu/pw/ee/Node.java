@@ -1,7 +1,6 @@
 package pl.edu.pw.ee;
 
 public class Node implements Comparable<Node> {
-
     private Character sign;
     private int frequency;
     private Node left;

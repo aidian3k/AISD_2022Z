@@ -105,7 +105,7 @@ public class HuffmanTree {
         int counter = 0;
 
         saveHuffmanTreeToFile();
-        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/sampleFile.txt", StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
         PrintWriter compressWriter = new PrintWriter(new FileWriter(pathToRootDir + "/compressedFile.txt", StandardCharsets.UTF_8));
         int characterReader;
 

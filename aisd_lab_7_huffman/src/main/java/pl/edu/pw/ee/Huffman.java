@@ -15,11 +15,13 @@ public class Huffman {
         if (compress) {
             reader = new FileHandler(pathToRootDir, compress);
             List<Node> nodeList = reader.readFrequencyOfSingleCharacters();
+
             huffmanTree = new HuffmanTree(nodeList, pathToRootDir);
             counter = huffmanTree.encodeFile();
         } else {
             reader = new FileHandler(pathToRootDir, compress);
             List<Character> listOfChars = new ArrayList<>();
+
             HashMap<Character, String> codes = reader.readCharacterCodesFromFile(listOfChars);
             huffmanTree = new HuffmanTree(codes, listOfChars, pathToRootDir);
             counter = huffmanTree.decodeFile();
@@ -28,8 +30,8 @@ public class Huffman {
         return counter;
     }
 
-    public static void main(String... args) throws IOException {
+    public static void main(String ... args) throws IOException {
         Huffman huffman = new Huffman();
-        System.out.println(huffman.huffman("aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/results", true));
+        System.out.println(huffman.huffman("aisd_lab_7_huffman/src/main/resources/results", true));
     }
 }

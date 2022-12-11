@@ -14,6 +14,12 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         this.data = new ArrayList<>();
     }
 
+    public Heap(List<T> data) {
+        this.data = data;
+        validateData(data);
+        this.build();
+    }
+
     @Override
     public void put(T item) {
         if (item == null) {
@@ -139,6 +145,14 @@ public class Heap<T extends Comparable<T>> implements HeapInterface<T>, HeapExte
         }
 
         return minimumChild;
+    }
+
+    public T getMinimumElement() {
+        if (data.size() == 0) {
+            throw new IllegalArgumentException("Cannot get minimum element from empty heap!");
+        }
+
+        return data.get(0);
     }
 
     private void swap(int firstId, int secondId) {
