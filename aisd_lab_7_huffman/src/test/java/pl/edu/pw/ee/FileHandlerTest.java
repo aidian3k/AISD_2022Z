@@ -3,12 +3,10 @@ package pl.edu.pw.ee;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class FileHandlerTest {
     private FileHandler fileHandler;
@@ -61,7 +59,7 @@ public class FileHandlerTest {
     public void should_throwAnException_when_decompressingWithoutCompressedFile() throws IOException {
         //when
         boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithoutCompressedFile";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingWithoutCompressedFile";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
 
         //then
@@ -84,7 +82,7 @@ public class FileHandlerTest {
     public void should_correctlyReadFrequencyOfCharacters_when_decompressedFileIsEmpty() throws IOException {
         //when
         boolean isCompressing = true;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithoutCompressedFile";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingWithoutCompressedFile";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
         List<Node> nodeList = fileHandler.readFrequencyOfSingleCharacters();
 
@@ -97,7 +95,7 @@ public class FileHandlerTest {
     public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithOneCharacter() throws IOException {
         //when
         boolean isCompressing = true;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingOneCharacter";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
         List<Node> nodeList = fileHandler.readFrequencyOfSingleCharacters();
 
@@ -113,7 +111,7 @@ public class FileHandlerTest {
     public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithTwoCharacters() throws IOException {
         //when
         boolean isCompressing = true;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithTwoCharacters";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingWithTwoCharacters";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
         List<Node> nodeList = fileHandler.readFrequencyOfSingleCharacters();
 
@@ -130,51 +128,64 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctly_readCodes_when_keysFileIsEmpty() throws IOException {
+    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithManyCharacters() throws IOException {
         //when
-        boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithEmptyKeys";
+        boolean isCompressing = true;
+        String pathToTheFile = "src/test/resources/FileHandler/compressingWithManyCharacters";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
-
-        HashMap<Character, String> mapOfCodes = fileHandler.readCharacterCodesFromFile(new ArrayList<>());
+        List<Node> nodeList = fileHandler.readFrequencyOfSingleCharacters();
 
         //then
-        int expectedListSize = 0;
-        assertEquals(expectedListSize, mapOfCodes.size());
+        int expectedListSize = 4;
+        int expectedFrequencyOfB = 1;
+        int expectedFrequencyOfC = 6;
+        int expectedFrequencyOfA = 5;
+        int expectedFrequencyOfD = 3;
+
+        assertEquals(expectedListSize, nodeList.size());
+        assertEquals(expectedFrequencyOfB, nodeList.get(0).getFrequency());
+        assertEquals(expectedFrequencyOfC, nodeList.get(1).getFrequency());
+        assertEquals(expectedFrequencyOfA, nodeList.get(2).getFrequency());
+        assertEquals(expectedFrequencyOfD, nodeList.get(3).getFrequency());
     }
 
     @Test
-    public void should_correctly_readCodes_when_keysFileHasOnlyOneCode() throws IOException {
+    public void should_correctlyReadCharactersKeysFromFile_when_fileIsEmpty() throws IOException {
         //when
         boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithOnlyOneCode";
+        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithOneCharacter";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
-
-        HashMap<Character, String> mapOfCodes = fileHandler.readCharacterCodesFromFile(new ArrayList<>());
+        List<Character> characters = fileHandler.readCharactersFromFile();
 
         //then
-        int expectedListSize = 1;
-        Character expectedCharacter = '_';
-        String expectedCode = "101";
-
-        assertEquals(expectedListSize, mapOfCodes.size());
-        assertTrue(mapOfCodes.containsKey(expectedCharacter));
-        assertEquals(expectedCode, mapOfCodes.get(expectedCharacter));
+        int expectedSizeOfList = 1;
+        assertEquals(expectedSizeOfList, characters.size());
     }
 
     @Test
-    public void should_correctly_readCodes_when_keysFileHasTwoCodes() throws IOException {
+    public void should_correctlyReadKeyCharactersFromFile_when_fileHasOneCharacter() throws IOException {
         //when
         boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithTwoCodes";
+        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithManyCharacters";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
-
-        HashMap<Character, String> mapOfCodes = fileHandler.readCharacterCodesFromFile(new ArrayList<>());
+        List<Character> characters = fileHandler.readCharactersFromFile();
 
         //then
-        int expectedListSize = 2;
+        int expectedSizeOfList = 11;
+        assertEquals(expectedSizeOfList, characters.size());
+    }
 
-        assertEquals(expectedListSize, mapOfCodes.size());
+    @Test
+    public void should_correctlyReadCharactersFromKeysFile_when_fileHasManyCharacters() throws IOException {
+        //when
+        boolean isCompressing = false;
+        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithManyCharacters";
+        fileHandler = new FileHandler(pathToTheFile, isCompressing);
+        List<Character> characters = fileHandler.readCharactersFromFile();
+
+        //then
+        int expectedSizeOfList = 11;
+        assertEquals(expectedSizeOfList, characters.size());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -182,24 +193,10 @@ public class FileHandlerTest {
             throws IOException {
         //when
         boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithOnlyOneCode";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
 
         fileHandler.readFrequencyOfSingleCharacters();
-
-        //then
-        assert false;
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throwThrowAnException_when_tryingToUseMethodDestinedForDeCompressingWhenCompressing()
-            throws IOException {
-        //when
-        boolean isCompressing = true;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithTwoCharacters";
-        fileHandler = new FileHandler(pathToTheFile, isCompressing);
-
-        fileHandler.readCharacterCodesFromFile(new ArrayList<>());
 
         //then
         assert false;

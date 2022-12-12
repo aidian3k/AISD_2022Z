@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class FileHandler {
@@ -44,23 +43,18 @@ public class FileHandler {
         return currentChars;
     }
 
-    public HashMap<Character, String> readCharacterCodesFromFile(List<Character> listOfChars) throws IOException {
-        validateDeCompressionUsage();
+    public List<Character> readCharactersFromFile() throws IOException {
+        validateDecompressionUsage();
 
-        String line;
-        HashMap<Character, String> codes = new HashMap<>();
+        List<Character> listOfChars = new ArrayList<>();
+        int characterReader;
 
-        while ((line = reader.readLine()) != null) {
-            String[] splitLine = line.split(" ");
-
-            char currentCharacter = (char) Integer.parseInt(splitLine[0]);
-            String correspondingCode = splitLine[1];
-
+        while ((characterReader = reader.read()) != -1) {
+            char currentCharacter = (char) characterReader;
             listOfChars.add(currentCharacter);
-            codes.put(currentCharacter, correspondingCode);
         }
 
-        return codes;
+        return listOfChars;
     }
 
     private Node findProperNodeForChar(char singleChar, List<Node> currentChars) {
@@ -84,13 +78,13 @@ public class FileHandler {
         }
     }
 
-    private void validateDeCompressionUsage() {
+    private void validateDecompressionUsage() {
         if (isCompressing) {
             throw new IllegalArgumentException("This method is only accessible when decompressingFile!");
         }
     }
 
-    private void validateInput(String pathToRootDir, boolean compress) throws IOException {
+    private void validateInput(String pathToRootDir, boolean compress) {
         if (pathToRootDir == null) {
             throw new IllegalArgumentException("PathToRootDir argument cannot be null!");
         }

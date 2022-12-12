@@ -36,7 +36,6 @@ public class Node implements Comparable<Node> {
     }
 
     public void setLeft(Node node) {
-        validateNode(node);
         this.left = node;
     }
 
@@ -45,7 +44,6 @@ public class Node implements Comparable<Node> {
     }
 
     public void setRight(Node node) {
-        validateNode(node);
         this.right = node;
     }
 
@@ -78,12 +76,6 @@ public class Node implements Comparable<Node> {
     private void validateInternalNode(int frequency, Node left, Node right) {
         if (frequency < 1 || left == null || right == null) {
             throw new IllegalArgumentException("Nodes cannot be null and frequency cannot be less than 1");
-        }
-    }
-
-    private void validateNode(Node node) {
-        if (node == null) {
-            throw new IllegalArgumentException("Node cannot be null");
         }
     }
 
