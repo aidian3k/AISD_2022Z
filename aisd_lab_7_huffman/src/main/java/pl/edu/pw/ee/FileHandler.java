@@ -28,6 +28,7 @@ public class FileHandler {
 
         while ((characterReader = reader.read()) != -1) {
             char singleChar = (char) characterReader;
+            //validateSingleCharacter(singleChar);
             Node properNode = findProperNodeForChar(singleChar, currentChars);
 
             if (properNode == null) {
@@ -128,7 +129,7 @@ public class FileHandler {
     }
 
     private void validateDecompression(String pathToRootDir) {
-        File compressedFile = new File(pathToRootDir + "/compressedFile.txt");
+        File compressedFile = new File(pathToRootDir + "/compressedFile");
         File keysFile = new File(pathToRootDir + "/keys.txt");
 
         if (!keysFile.exists() || !compressedFile.exists()) {

@@ -111,6 +111,24 @@ public class HuffmanTest {
     }
 
     @Test
+    public void compress() {
+        String pathRootToDir = "src/test/resources/Huffman/sample";
+        boolean isCompressing = true;
+        huffmanCoding = new Huffman();
+        int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
+        System.out.println(codedCharacters);
+    }
+
+    @Test
+    public void decompress() {
+        String pathRootToDir = "src/test/resources/Huffman/sample";
+        boolean isCompressing = false;
+        huffmanCoding = new Huffman();
+        int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
+        System.out.println(codedCharacters);
+    }
+
+    @Test
     public void should_correctlyDecompressSampleFile_when_fileIsCompletelyCorrect() {
         //given
         String pathRootToDir = "src/test/resources/Huffman/sample";

@@ -120,40 +120,63 @@ public class HuffmanTree {
         saveHuffmanTreeToFile();
 
         BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
-        PrintWriter compressWriter = new PrintWriter(new FileWriter(pathToRootDir + "/compressedFile.txt", StandardCharsets.UTF_8));
+        BitOutputStream compressWriter = new BitOutputStream(new FileOutputStream(pathToRootDir + "/compressedFile"));
+
         int characterReader;
+        StringBuilder compressedCode = new StringBuilder();
 
         while ((characterReader = reader.read()) != -1) {
             char singleChar = (char) characterReader;
             String codeForSingleChar = codes.get(singleChar);
 
-            compressWriter.print(codeForSingleChar);
+            compressedCode.append(codeForSingleChar);
             counter += codeForSingleChar.length();
         }
+
+        int remainingBits = 8 - (counter + 3) % 8;
+
+        if (remainingBits == 8) {
+            remainingBits = 0;
+        }
+
+        String remainingBitsBinary = String.format("%3s", Integer.toBinaryString(remainingBits)).replaceAll(" ", "0");
+
+        writeBinaryCodeToFile(compressWriter, remainingBitsBinary);
+        writeBinaryCodeToFile(compressWriter, compressedCode.toString());
 
         reader.close();
         compressWriter.close();
 
-        return counter;
+        return counter + remainingBits + 3;
+    }
+
+    private void writeBinaryCodeToFile(BitOutputStream compressWriter, String codeForSingleChar) throws IOException {
+        for (char character : codeForSingleChar.toCharArray()) {
+            if (character == '1') {
+                compressWriter.write(1);
+            } else {
+                compressWriter.write(0);
+            }
+        }
     }
 
     public int decodeFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/compressedFile.txt", StandardCharsets.UTF_8));
-        PrintWriter decodeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
+        BitInputStream reader = new BitInputStream(new FileInputStream(pathToRootDir + "/compressedFile"));
+        FileOutputStream decodeWriter = new FileOutputStream(pathToRootDir + "/decompressedFile.txt");
 
-        int characterReader;
+        String code = readByteCodeFromFile(reader);
         int counter = 0;
+        int remainingBits = Integer.parseInt(code.substring(0, 3), 2);
+
+        Node currentNode = this.root;
+        code = code.substring(3, code.length() - remainingBits);
 
         if (codes.size() == 1) {
-            counter = handleOneCharacterFile(reader, decodeWriter, counter);
+            counter = handleOneCharacterFile(code, decodeWriter, counter);
             return counter;
         }
 
-        Node currentNode = this.root;
-
-        while ((characterReader = reader.read()) != -1) {
-            char singleChar = (char) characterReader;
-
+        for (char singleChar : code.toCharArray()) {
             if (singleChar == '0') {
                 currentNode = currentNode.getLeft();
             } else if (singleChar == '1') {
@@ -173,6 +196,22 @@ public class HuffmanTree {
         reader.close();
 
         return counter;
+    }
+
+    private String readByteCodeFromFile(BitInputStream reader) throws IOException {
+        StringBuilder encodedFile = new StringBuilder();
+
+        int characterReader;
+
+        while ((characterReader = reader.read()) != -1) {
+            if (characterReader == 0) {
+                encodedFile.append('0');
+            } else {
+                encodedFile.append('1');
+            }
+        }
+
+        return encodedFile.toString();
     }
 
     private void saveHuffmanTreeToFile() throws IOException {
@@ -211,13 +250,14 @@ public class HuffmanTree {
         return codes;
     }
 
-    private int handleOneCharacterFile(BufferedReader reader, PrintWriter decodeWriter, int counter) throws IOException {
-        while (reader.read() != -1) {
+    private int handleOneCharacterFile(String code, FileOutputStream decodeWriter, int counter) throws IOException {
+        for (int i = 0; i < code.length(); i++) {
             char decompressedCharacter = root.getSign();
 
             decodeWriter.write(decompressedCharacter);
             counter++;
         }
+
         return counter;
     }
 
