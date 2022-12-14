@@ -20,7 +20,7 @@ public class HuffmanTest {
         huffmanCoding = new Huffman();
         int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
         File keysFile = new File(pathRootToDir + "/keys.txt");
-        File compressedFile = new File(pathRootToDir + "/compressedFile.txt");
+        File compressedFile = new File(pathRootToDir + "/compressedFile.txt.txt");
 
         //then
         int expectedCodedCharacters = 0;
@@ -40,7 +40,7 @@ public class HuffmanTest {
         huffmanCoding = new Huffman();
         int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
         File keysFile = new File(pathRootToDir + "/keys.txt");
-        File compressedFile = new File(pathRootToDir + "/compressedFile.txt");
+        File compressedFile = new File(pathRootToDir + "/compressedFile.txt.txt");
 
         //then
         int expectedCodedCharacters = 0;
@@ -60,7 +60,7 @@ public class HuffmanTest {
         huffmanCoding = new Huffman();
         int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
         File keysFile = new File(pathRootToDir + "/keys.txt");
-        File compressedFile = new File(pathRootToDir + "/compressedFile.txt");
+        File compressedFile = new File(pathRootToDir + "/compressedFile.txt.txt");
 
         //then
         int expectedCodedCharacters = 56;
@@ -194,7 +194,7 @@ public class HuffmanTest {
         huffmanCoding = new Huffman();
         int codedCharacters = huffmanCoding.huffman(pathRootToDir, isCompressing);
         File keysFile = new File(pathRootToDir + "/keys.txt");
-        File compressedFile = new File(pathRootToDir + "/compressedFile.txt");
+        File compressedFile = new File(pathRootToDir + "/compressedFile.txt.txt");
 
         //then
         int expectedCodedCharacters = 2196449;

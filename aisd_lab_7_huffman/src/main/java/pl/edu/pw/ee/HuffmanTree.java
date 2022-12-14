@@ -1,7 +1,6 @@
 package pl.edu.pw.ee;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,37 +12,33 @@ public class HuffmanTree {
     public HuffmanTree(String pathToRootDir, boolean compress) {
         validatePathToRootDir(pathToRootDir);
 
-        try {
-            FileHandler reader = new FileHandler(pathToRootDir, compress);
+        FileHandler reader = new FileHandler(pathToRootDir, compress);
 
-            this.pathToRootDir = pathToRootDir;
-            this.codes = new HashMap<>();
+        this.pathToRootDir = pathToRootDir;
+        this.codes = new HashMap<>();
 
-            if (compress) {
-                List<Node> nodeList = reader.readFrequencyOfSingleCharacters();
-                this.root = createHuffmanTree(nodeList);
+        if (compress) {
+            List<Node> nodeList = reader.readFrequencyOfSingleCharacters();
+            this.root = createHuffmanTree(nodeList);
 
-                if (nodeList.size() == 1) {
-                    this.codes.put(nodeList.get(0).getSign(), "0");
-                } else {
-                    createHuffmanPrefixCodes(this.root, "");
-                }
+            if (nodeList.size() == 1) {
+                this.codes.put(nodeList.get(0).getSign(), "0");
             } else {
-                List<Character> listOfChars = reader.readCharactersFromFile();
-
-                if (listOfChars.stream().distinct().count() == 2) {
-                    this.codes.put(listOfChars.get(1), "0");
-                    this.root = rebuildHuffmanTree(null, listOfChars);
-                } else if (listOfChars.size() == 1) {
-                    this.codes.put(listOfChars.get(0), "0");
-                    this.root = rebuildHuffmanTree(null, listOfChars);
-                } else {
-                    this.root = rebuildHuffmanTree(null, listOfChars);
-                    createHuffmanPrefixCodes(this.root, "");
-                }
+                createHuffmanPrefixCodes(this.root, "");
             }
-        } catch (IOException fileException) {
-            throw new IllegalArgumentException("There is a problem with files in given path!");
+        } else {
+            List<Character> listOfChars = reader.readCharactersFromFile();
+
+            if (listOfChars.stream().distinct().count() == 2) {
+                this.codes.put(listOfChars.get(1), "0");
+                this.root = rebuildHuffmanTree(null, listOfChars);
+            } else if (listOfChars.size() == 1) {
+                this.codes.put(listOfChars.get(0), "0");
+                this.root = rebuildHuffmanTree(null, listOfChars);
+            } else {
+                this.root = rebuildHuffmanTree(null, listOfChars);
+                createHuffmanPrefixCodes(this.root, "");
+            }
         }
     }
 
@@ -119,8 +114,8 @@ public class HuffmanTree {
 
         saveHuffmanTreeToFile();
 
-        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
-        BitOutputStream compressWriter = new BitOutputStream(new FileOutputStream(pathToRootDir + "/compressedFile"));
+        InputStreamReader reader = new InputStreamReader(new FileInputStream(pathToRootDir + "/decompressedFile.txt"));
+        BitOutputStream compressWriter = new BitOutputStream(new FileOutputStream(pathToRootDir + "/compressedFile.txt"));
 
         int characterReader;
         StringBuilder compressedCode = new StringBuilder();
@@ -150,19 +145,23 @@ public class HuffmanTree {
         return counter + remainingBits + 3;
     }
 
-    private void writeBinaryCodeToFile(BitOutputStream compressWriter, String codeForSingleChar) throws IOException {
-        for (char character : codeForSingleChar.toCharArray()) {
-            if (character == '1') {
-                compressWriter.write(1);
-            } else {
-                compressWriter.write(0);
+    private void writeBinaryCodeToFile(BitOutputStream compressWriter, String codeForSingleChar) {
+        try {
+            for (char character : codeForSingleChar.toCharArray()) {
+                if (character == '1') {
+                    compressWriter.write(1);
+                } else {
+                    compressWriter.write(0);
+                }
             }
+        } catch (IOException fileException) {
+            throw new IllegalStateException("There is a problem with byte file when decoding!");
         }
     }
 
     public int decodeFile() throws IOException {
-        BitInputStream reader = new BitInputStream(new FileInputStream(pathToRootDir + "/compressedFile"));
-        FileOutputStream decodeWriter = new FileOutputStream(pathToRootDir + "/decompressedFile.txt");
+        BitInputStream reader = new BitInputStream(new FileInputStream(pathToRootDir + "/compressedFile.txt"));
+        OutputStreamWriter decodeWriter = new OutputStreamWriter(new FileOutputStream(pathToRootDir + "/decompressedFile.txt"));
 
         String code = readByteCodeFromFile(reader);
         int counter = 0;
@@ -198,28 +197,36 @@ public class HuffmanTree {
         return counter;
     }
 
-    private String readByteCodeFromFile(BitInputStream reader) throws IOException {
+    private String readByteCodeFromFile(BitInputStream reader) {
         StringBuilder encodedFile = new StringBuilder();
 
         int characterReader;
 
-        while ((characterReader = reader.read()) != -1) {
-            if (characterReader == 0) {
-                encodedFile.append('0');
-            } else {
-                encodedFile.append('1');
+        try {
+            while ((characterReader = reader.read()) != -1) {
+                if (characterReader == 0) {
+                    encodedFile.append('0');
+                } else {
+                    encodedFile.append('1');
+                }
             }
+        } catch (IOException fileException) {
+            throw new IllegalArgumentException("There is a problem with reading bytes from the file!");
         }
 
         return encodedFile.toString();
     }
 
-    private void saveHuffmanTreeToFile() throws IOException {
-        PrintWriter treeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/keys.txt"));
-        String preOrderTraversalResult = traverseHuffmanTreePreOrder();
-        treeWriter.print(preOrderTraversalResult);
+    private void saveHuffmanTreeToFile() {
+        try {
+            OutputStreamWriter treeWriter = new OutputStreamWriter(new FileOutputStream(pathToRootDir + "/keys.txt"));
+            String preOrderTraversalResult = traverseHuffmanTreePreOrder();
+            treeWriter.write(preOrderTraversalResult);
 
-        treeWriter.close();
+            treeWriter.close();
+        } catch (IOException fileException) {
+            throw new IllegalArgumentException("There is a problem with saving huffmanTree to keys.txt file!");
+        }
     }
 
     public String traverseHuffmanTreePreOrder() {
@@ -250,12 +257,16 @@ public class HuffmanTree {
         return codes;
     }
 
-    private int handleOneCharacterFile(String code, FileOutputStream decodeWriter, int counter) throws IOException {
-        for (int i = 0; i < code.length(); i++) {
-            char decompressedCharacter = root.getSign();
+    private int handleOneCharacterFile(String code, OutputStreamWriter decodeWriter, int counter) {
+        try {
+            for (int i = 0; i < code.length(); i++) {
+                char decompressedCharacter = root.getSign();
 
-            decodeWriter.write(decompressedCharacter);
-            counter++;
+                decodeWriter.write(decompressedCharacter);
+                counter++;
+            }
+        } catch (IOException exception) {
+            throw new IllegalArgumentException("There is a problem with reading characters in the file!");
         }
 
         return counter;
