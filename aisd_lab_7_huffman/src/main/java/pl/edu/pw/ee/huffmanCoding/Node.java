@@ -1,4 +1,4 @@
-package pl.edu.pw.ee;
+package pl.edu.pw.ee.huffmanCoding;
 
 public class Node implements Comparable<Node> {
     private Character sign;
@@ -66,11 +66,6 @@ public class Node implements Comparable<Node> {
     @Override
     public int compareTo(Node comparedNode) {
         return this.frequency - comparedNode.frequency;
-    }
-
-    @Override
-    public String toString() {
-        return sign + " " + frequency + " " + isLeaf();
     }
 
     private void validateInternalNode(int frequency, Node left, Node right) {

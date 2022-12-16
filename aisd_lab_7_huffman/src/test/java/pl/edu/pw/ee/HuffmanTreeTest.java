@@ -1,6 +1,7 @@
 package pl.edu.pw.ee;
 
 import org.junit.Test;
+import pl.edu.pw.ee.huffmanCoding.HuffmanTree;
 
 import static org.junit.Assert.assertEquals;
 
@@ -94,7 +95,7 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeForD, huffmanTree.getCodes().get('D'));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void should_correctlyCreateHuffmanTree_when_thereAreOnlyDiacriticalCharacters() {
         //given
         boolean isCompressing = true;
@@ -102,16 +103,9 @@ public class HuffmanTreeTest {
 
         //when
         huffmanTree = new HuffmanTree(pathToRootDir, isCompressing);
-        String preOrderResult = huffmanTree.traverseHuffmanTreePreOrder();
 
         //then
-        String expectedPreOrderResult = "01ś001ą1Ō01∂1ć";
-        String expectedCodeForS= "0";
-        String expectedCodeForA = "100";
-
-        assertEquals(expectedPreOrderResult, preOrderResult);
-        assertEquals(expectedCodeForA, huffmanTree.getCodes().get('ą'));
-        assertEquals(expectedCodeForS, huffmanTree.getCodes().get('ś'));
+        assert false;
     }
 
     @Test
@@ -153,22 +147,6 @@ public class HuffmanTreeTest {
     }
 
     @Test
-    public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyNewLinesInFile() {
-        //given
-        String pathToRootDir = "src/test/resources/HuffmanTree/newLineCharacterCompression";
-        boolean isCompressing = false;
-
-        //when
-        huffmanTree = new HuffmanTree(pathToRootDir, isCompressing);
-        String preOrderResult = huffmanTree.traverseHuffmanTreePreOrder();
-
-        //then
-        String expectedPreOrderResult = "1";
-
-        assertEquals(expectedPreOrderResult, preOrderResult);
-    }
-
-    @Test
     public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyTwoCharToDecompress() {
         //given
         boolean isCompressing = false;
@@ -207,4 +185,5 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeForA, huffmanTree.getCodes().get('A'));
         assertEquals(expectedCodeForD, huffmanTree.getCodes().get('D'));
     }
+
 }

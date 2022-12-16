@@ -1,4 +1,6 @@
-package pl.edu.pw.ee;
+package pl.edu.pw.ee.fileHandling;
+
+import pl.edu.pw.ee.huffmanCoding.Node;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +21,7 @@ public class FileHandler {
             String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
             this.reader = new InputStreamReader(new FileInputStream(pathToFile));
         } catch (IOException fileException) {
-            throw new IllegalArgumentException("There is a problem with initializing the reader file!");
+            throw new IllegalStateException("There is a problem with initializing the reader file!");
         }
     }
 
@@ -85,7 +87,9 @@ public class FileHandler {
     }
 
     private void validateSingleCharacter(char singleCharacter) {
-        if (singleCharacter >= 128) {
+        int basicAsciiStandardMaxValue = 128;
+
+        if (singleCharacter >= basicAsciiStandardMaxValue) {
             throw new IllegalArgumentException("Characters in compression must be in " +
                     "basic ASCII table standard! In the file there is a " + singleCharacter + " character");
         }
@@ -118,10 +122,6 @@ public class FileHandler {
             throw new IllegalArgumentException("Given path must lead to the directory!");
         }
 
-        if (!directoryToRead.canRead()) {
-            throw new IllegalArgumentException("Cannot do anything from directory, from which you cannot read!");
-        }
-
         if (compress) {
             validateCompression(pathToRootDir);
         } else {
@@ -135,15 +135,6 @@ public class FileHandler {
         if (!decompressedFile.exists()) {
             throw new IllegalArgumentException("DecompressedFile.txt does not exist in leading directory!");
         }
-
-        if (!decompressedFile.isFile()) {
-            throw new IllegalArgumentException("DecompressedFile.txt must be a file!");
-        }
-
-        if (!decompressedFile.canRead()) {
-            throw new IllegalArgumentException("Cannot compress file, which you cannot read from!");
-        }
-
     }
 
     private void validateDecompression(String pathToRootDir) {
@@ -152,10 +143,6 @@ public class FileHandler {
 
         if (!keysFile.exists() || !compressedFile.exists()) {
             throw new IllegalArgumentException("Decompression cannot be done without keys and compressed files");
-        }
-
-        if (!keysFile.canRead() || !compressedFile.canRead()) {
-            throw new IllegalArgumentException("Cannot read from keys and compressedFile when decompressing!");
         }
     }
 }

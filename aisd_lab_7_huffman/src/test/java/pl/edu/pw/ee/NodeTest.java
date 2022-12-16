@@ -1,6 +1,7 @@
 package pl.edu.pw.ee;
 
 import org.junit.Test;
+import pl.edu.pw.ee.huffmanCoding.Node;
 
 import java.util.Arrays;
 

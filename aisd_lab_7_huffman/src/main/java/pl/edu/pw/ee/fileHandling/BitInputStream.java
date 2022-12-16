@@ -1,4 +1,4 @@
-package pl.edu.pw.ee;
+package pl.edu.pw.ee.fileHandling;
 
 import java.io.IOException;
 import java.io.InputStream;
