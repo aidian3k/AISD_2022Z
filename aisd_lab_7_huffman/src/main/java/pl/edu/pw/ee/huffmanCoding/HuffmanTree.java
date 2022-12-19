@@ -27,16 +27,18 @@ public class HuffmanTree {
         if (compress) {
             List<Node> nodeList = reader.readFrequencyOfSingleCharacters();
             this.root = createHuffmanTree(nodeList);
+            int minimalPossibleNumberOfNodes = 1;
 
-            if (nodeList.size() == 1) {
+            if (nodeList.size() == minimalPossibleNumberOfNodes) {
                 this.codes.put(nodeList.get(0).getSign(), "0");
             } else {
                 createHuffmanPrefixCodes(this.root, "");
             }
         } else {
             List<Character> listOfChars = reader.readCharactersFromFile();
+            int minimalPossibleCharsToRebuildTree = 2;
 
-            if (listOfChars.stream().distinct().count() == 2) {
+            if (listOfChars.size() == minimalPossibleCharsToRebuildTree) {
                 this.codes.put(listOfChars.get(1), "0");
                 this.root = rebuildHuffmanTree(null, listOfChars);
             } else {

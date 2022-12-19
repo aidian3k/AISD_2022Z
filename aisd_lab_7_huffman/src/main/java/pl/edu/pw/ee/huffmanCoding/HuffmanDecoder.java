@@ -23,7 +23,6 @@ public class HuffmanDecoder {
             return 0;
         }
 
-
         String pathToRootDir = huffmanTree.getPathToRootDir();
         String readerFilePath = constants.getCompressedFilePath(pathToRootDir);
         String decodeWriterFilePath = constants.getDecompressedFilePath(pathToRootDir);

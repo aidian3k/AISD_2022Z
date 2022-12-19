@@ -35,7 +35,6 @@ public class HuffmanEncoder {
             int characterReader;
             StringBuilder compressedCode = new StringBuilder();
 
-
             while ((characterReader = reader.read()) != -1) {
                 char singleChar = (char) characterReader;
                 String codeForSingleChar = codes.get(singleChar);

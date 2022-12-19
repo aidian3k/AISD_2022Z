@@ -99,7 +99,7 @@ public class HuffmanTreeTest {
     public void should_correctlyCreateHuffmanTree_when_thereAreOnlyDiacriticalCharacters() {
         //given
         boolean isCompressing = true;
-        String pathToRootDir = "src/test/resources/HuffmanTree/diacreticalCharacterCompression";
+        String pathToRootDir = "src/test/resources/HuffmanTree/diacriticalCharacterCompression";
 
         //when
         huffmanTree = new HuffmanTree(pathToRootDir, isCompressing);

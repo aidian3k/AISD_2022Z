@@ -190,7 +190,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwThrowAnException_when_tryingToUseMethodDestinedForCompressingWhenDecompressing() {
+    public void should_throwAnException_when_tryingToUseMethodDestinedForCompressingWhenDecompressing() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
@@ -203,7 +203,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwThrowAnException_when_tryingToUseMethodDestinedForDecompressingWhenCompressing() {
+    public void should_throwAnException_when_tryingToUseMethodDestinedForDecompressingWhenCompressing() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
@@ -215,4 +215,16 @@ public class FileHandlerTest {
         assert false;
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_tryingToReadFileWithNoAsciiCharacter() {
+        //when
+        boolean isCompressing = true;
+        String pathToTheFile = "src/test/resources/FileHandler/diacreticalCharacterCompression";
+        fileHandler = new FileHandler(pathToTheFile, isCompressing);
+
+        fileHandler.readFrequencyOfSingleCharacters();
+
+        //then
+        assert false;
+    }
 }
