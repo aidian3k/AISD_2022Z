@@ -1,57 +1,77 @@
-package pl.edu.pw.ee;
+package pl.edu.pw.ee.fileHandling;
 
-import java.io.BufferedReader;
+import pl.edu.pw.ee.huffmanCoding.Node;
+
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
-    private final BufferedReader reader;
+    private final InputStreamReader reader;
     private final boolean isCompressing;
 
-    public FileHandler(String pathToRootDir, boolean compress) throws IOException {
+    public FileHandler(String pathToRootDir, boolean compress) {
         validateInput(pathToRootDir, compress);
 
+<<<<<<< HEAD:aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/FileHandler.java
         this.isCompressing = compress;
         String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
         this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.ISO_8859_1));
+=======
+        try {
+            this.isCompressing = compress;
+            String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
+            this.reader = new InputStreamReader(new FileInputStream(pathToFile));
+        } catch (IOException fileException) {
+            throw new IllegalStateException("There is a problem with initializing the reader file!");
+        }
+>>>>>>> 77466e65f972e1238b5d71e10f883f3f94861098:aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/fileHandling/FileHandler.java
     }
 
-    public List<Node> readFrequencyOfSingleCharacters() throws IOException {
+    public List<Node> readFrequencyOfSingleCharacters() {
         validateCompressionUsage();
 
         List<Node> currentChars = new ArrayList<>();
         int characterReader;
 
-        while ((characterReader = reader.read()) != -1) {
-            char singleChar = (char) characterReader;
-            Node properNode = findProperNodeForChar(singleChar, currentChars);
+        try {
+            while ((characterReader = reader.read()) != -1) {
+                char singleChar = (char) characterReader;
+                validateSingleCharacter(singleChar);
+                Node properNode = findProperNodeForChar(singleChar, currentChars);
 
-            if (properNode == null) {
-                Node newNode = new Node(singleChar, 1);
-                currentChars.add(newNode);
-            } else {
-                properNode.increaseFrequency();
+                if (properNode == null) {
+                    Node newNode = new Node(singleChar, 1);
+                    currentChars.add(newNode);
+                } else {
+                    properNode.increaseFrequency();
+                }
             }
-        }
 
-        reader.close();
+            reader.close();
+        } catch (IOException fileException) {
+            throw new IllegalStateException("There is a problem with file when reading the frequency of letters!");
+        }
 
         return currentChars;
     }
 
-    public List<Character> readCharactersFromFile() throws IOException {
+    public List<Character> readCharactersFromFile() {
         validateDecompressionUsage();
 
         List<Character> listOfChars = new ArrayList<>();
         int characterReader;
 
-        while ((characterReader = reader.read()) != -1) {
-            char currentCharacter = (char) characterReader;
-            listOfChars.add(currentCharacter);
+        try {
+            while ((characterReader = reader.read()) != -1) {
+                char currentCharacter = (char) characterReader;
+                listOfChars.add(currentCharacter);
+            }
+        } catch (IOException fileException) {
+            throw new IllegalStateException("There is a problem with file when reading characters!");
         }
 
         return listOfChars;
@@ -70,6 +90,15 @@ public class FileHandler {
         }
 
         return properNode;
+    }
+
+    private void validateSingleCharacter(char singleCharacter) {
+        int basicAsciiStandardMaxValue = 128;
+
+        if (singleCharacter >= basicAsciiStandardMaxValue) {
+            throw new IllegalArgumentException("Characters in compression must be in " +
+                    "basic ASCII table standard! In the file there is a " + singleCharacter + " character");
+        }
     }
 
     private void validateCompressionUsage() {
@@ -99,10 +128,6 @@ public class FileHandler {
             throw new IllegalArgumentException("Given path must lead to the directory!");
         }
 
-        if (!directoryToRead.canRead()) {
-            throw new IllegalArgumentException("Cannot do anything from directory, from which you cannot read!");
-        }
-
         if (compress) {
             validateCompression(pathToRootDir);
         } else {
@@ -116,15 +141,6 @@ public class FileHandler {
         if (!decompressedFile.exists()) {
             throw new IllegalArgumentException("DecompressedFile.txt does not exist in leading directory!");
         }
-
-        if (!decompressedFile.isFile()) {
-            throw new IllegalArgumentException("DecompressedFile.txt must be a file!");
-        }
-
-        if (!decompressedFile.canRead()) {
-            throw new IllegalArgumentException("Cannot compress file, which you cannot read from!");
-        }
-
     }
 
     private void validateDecompression(String pathToRootDir) {
@@ -133,10 +149,6 @@ public class FileHandler {
 
         if (!keysFile.exists() || !compressedFile.exists()) {
             throw new IllegalArgumentException("Decompression cannot be done without keys and compressed files");
-        }
-
-        if (!keysFile.canRead() || !compressedFile.canRead()) {
-            throw new IllegalArgumentException("Cannot read from keys and compressedFile when decompressing!");
         }
     }
 }

@@ -1,8 +1,9 @@
 package pl.edu.pw.ee;
 
 import org.junit.Test;
+import pl.edu.pw.ee.fileHandling.FileHandler;
+import pl.edu.pw.ee.huffmanCoding.Node;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +13,7 @@ public class FileHandlerTest {
     private FileHandler fileHandler;
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_leadingPathIsNotADirectory() throws IOException {
+    public void should_throwAnException_when_leadingPathIsNotADirectory() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/leadingPathIsNotADirectoryTest.txt";
@@ -23,7 +24,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_pathToRootDirIsNull() throws IOException {
+    public void should_throwAnException_when_pathToRootDirIsNull() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = null;
@@ -34,7 +35,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_rootDirectoryDoesNotExist() throws IOException {
+    public void should_throwAnException_when_rootDirectoryDoesNotExist() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "";
@@ -45,7 +46,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_rootDirectoryDoesNotHaveDecompressedFileWhenCompressing() throws IOException {
+    public void should_throwAnException_when_rootDirectoryDoesNotHaveDecompressedFileWhenCompressing() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/emptyDirectory";
@@ -56,7 +57,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_decompressingWithoutCompressedFile() throws IOException {
+    public void should_throwAnException_when_decompressingWithoutCompressedFile() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/compressingWithoutCompressedFile";
@@ -68,7 +69,7 @@ public class FileHandlerTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwAnException_when_keyFileAndCompressedFileDoesNotExistInDirectory() throws IOException {
+    public void should_throwAnException_when_keyFileAndCompressedFileDoesNotExistInDirectory() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/emptyDirectory";
@@ -79,7 +80,7 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctlyReadFrequencyOfCharacters_when_decompressedFileIsEmpty() throws IOException {
+    public void should_correctlyReadFrequencyOfCharacters_when_decompressedFileIsEmpty() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/compressingWithoutCompressedFile";
@@ -92,7 +93,7 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithOneCharacter() throws IOException {
+    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithOneCharacter() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
@@ -101,14 +102,14 @@ public class FileHandlerTest {
 
         //then
         int expectedListSize = 1;
-        int expectedFrequency = 56;
+        int expectedFrequency = 7;
 
         assertEquals(expectedListSize, nodeList.size());
         assertEquals(expectedFrequency, nodeList.get(0).getFrequency());
     }
 
     @Test
-    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithTwoCharacters() throws IOException {
+    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithTwoCharacters() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/compressingWithTwoCharacters";
@@ -128,7 +129,7 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithManyCharacters() throws IOException {
+    public void should_correctlyReadFrequencyOfCharacters_when_compressingFileWithManyCharacters() {
         //when
         boolean isCompressing = true;
         String pathToTheFile = "src/test/resources/FileHandler/compressingWithManyCharacters";
@@ -150,20 +151,20 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctlyReadCharactersKeysFromFile_when_fileIsEmpty() throws IOException {
+    public void should_correctlyReadCharactersKeysFromFile_when_fileIsEmpty() {
         //when
         boolean isCompressing = false;
-        String pathToTheFile = "src/test/resources/FileHandler/decompressingWithOneCharacter";
+        String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
         fileHandler = new FileHandler(pathToTheFile, isCompressing);
         List<Character> characters = fileHandler.readCharactersFromFile();
 
         //then
-        int expectedSizeOfList = 1;
+        int expectedSizeOfList = 2;
         assertEquals(expectedSizeOfList, characters.size());
     }
 
     @Test
-    public void should_correctlyReadKeyCharactersFromFile_when_fileHasOneCharacter() throws IOException {
+    public void should_correctlyReadKeyCharactersFromFile_when_fileHasOneCharacter() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/decompressingWithManyCharacters";
@@ -176,7 +177,7 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void should_correctlyReadCharactersFromKeysFile_when_fileHasManyCharacters() throws IOException {
+    public void should_correctlyReadCharactersFromKeysFile_when_fileHasManyCharacters() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/decompressingWithManyCharacters";
@@ -189,8 +190,7 @@ public class FileHandlerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throwThrowAnException_when_tryingToUseMethodDestinedForCompressingWhenDecompressing()
-            throws IOException {
+    public void should_throwAnException_when_tryingToUseMethodDestinedForCompressingWhenDecompressing() {
         //when
         boolean isCompressing = false;
         String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
@@ -202,4 +202,29 @@ public class FileHandlerTest {
         assert false;
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_tryingToUseMethodDestinedForDecompressingWhenCompressing() {
+        //when
+        boolean isCompressing = true;
+        String pathToTheFile = "src/test/resources/FileHandler/compressingOneCharacter";
+        fileHandler = new FileHandler(pathToTheFile, isCompressing);
+
+        fileHandler.readCharactersFromFile();
+
+        //then
+        assert false;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throwAnException_when_tryingToReadFileWithNoAsciiCharacter() {
+        //when
+        boolean isCompressing = true;
+        String pathToTheFile = "src/test/resources/FileHandler/diacreticalCharacterCompression";
+        fileHandler = new FileHandler(pathToTheFile, isCompressing);
+
+        fileHandler.readFrequencyOfSingleCharacters();
+
+        //then
+        assert false;
+    }
 }

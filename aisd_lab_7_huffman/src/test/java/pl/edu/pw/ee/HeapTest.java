@@ -2,6 +2,7 @@ package pl.edu.pw.ee;
 
 import org.junit.Before;
 import org.junit.Test;
+import pl.edu.pw.ee.heap.Heap;
 
 import java.util.ArrayList;
 import java.util.Arrays;

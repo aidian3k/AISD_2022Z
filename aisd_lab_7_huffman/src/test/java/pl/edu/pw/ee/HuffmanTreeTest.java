@@ -1,6 +1,7 @@
 package pl.edu.pw.ee;
 
 import org.junit.Test;
+import pl.edu.pw.ee.huffmanCoding.HuffmanTree;
 
 import static org.junit.Assert.assertEquals;
 
@@ -94,24 +95,17 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeForD, huffmanTree.getCodes().get('D'));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void should_correctlyCreateHuffmanTree_when_thereAreOnlyDiacriticalCharacters() {
         //given
         boolean isCompressing = true;
-        String pathToRootDir = "src/test/resources/HuffmanTree/diacreticalCharacterCompression";
+        String pathToRootDir = "src/test/resources/HuffmanTree/diacriticalCharacterCompression";
 
         //when
         huffmanTree = new HuffmanTree(pathToRootDir, isCompressing);
-        String preOrderResult = huffmanTree.traverseHuffmanTreePreOrder();
 
         //then
-        String expectedPreOrderResult = "01ś001ą1Ō01∂1ć";
-        String expectedCodeForS= "0";
-        String expectedCodeForA = "100";
-
-        assertEquals(expectedPreOrderResult, preOrderResult);
-        assertEquals(expectedCodeForA, huffmanTree.getCodes().get('ą'));
-        assertEquals(expectedCodeForS, huffmanTree.getCodes().get('ś'));
+        assert false;
     }
 
     @Test
@@ -151,7 +145,11 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeSize, huffmanTree.getCodes().size());
         assertEquals(expectedCodeForA, huffmanTree.getCodes().get('a'));
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 77466e65f972e1238b5d71e10f883f3f94861098
     @Test
     public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyTwoCharToDecompress() {
         //given
@@ -191,4 +189,5 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeForA, huffmanTree.getCodes().get('A'));
         assertEquals(expectedCodeForD, huffmanTree.getCodes().get('D'));
     }
+
 }
