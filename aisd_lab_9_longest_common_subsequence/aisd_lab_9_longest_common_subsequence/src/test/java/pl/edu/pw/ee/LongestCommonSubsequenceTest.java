@@ -1,17 +1,15 @@
 package pl.edu.pw.ee;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 
 public class LongestCommonSubsequenceTest {
-    
     @Test
     public void test() {
-        String text1 = "PREZENTY";
-        String text2 = "RESZTA";
+        String text1 = "często_z_odkrywaniem";
+        String text2 = "rzeczy_nie_trzeba\n_się_spieszyć";
         LongestCommonSubsequence longestCommonSubsequence = new LongestCommonSubsequence(text1, text2);
-        System.out.println(longestCommonSubsequence.findLCS());
+        longestCommonSubsequence.prepareDisplayMatrix();
+        longestCommonSubsequence.displayArr();
     }
     
 }
