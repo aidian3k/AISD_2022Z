@@ -1,6 +1,6 @@
 package pl.edu.pw.ee;
 
-public final class LongestCommonSubsequence {
+public class LongestCommonSubsequence {
     private final String topStr;
     private final String leftStr;
     private int[][] characterMatrix;
