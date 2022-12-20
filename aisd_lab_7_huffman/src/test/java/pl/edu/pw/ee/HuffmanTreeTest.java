@@ -151,23 +151,7 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeSize, huffmanTree.getCodes().size());
         assertEquals(expectedCodeForA, huffmanTree.getCodes().get('a'));
     }
-
-    @Test
-    public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyNewLinesInFile() {
-        //given
-        String pathToRootDir = "src/test/resources/HuffmanTree/newLineCharacterCompression";
-        boolean isCompressing = false;
-
-        //when
-        huffmanTree = new HuffmanTree(pathToRootDir, isCompressing);
-        String preOrderResult = huffmanTree.traverseHuffmanTreePreOrder();
-
-        //then
-        String expectedPreOrderResult = "1";
-
-        assertEquals(expectedPreOrderResult, preOrderResult);
-    }
-
+    
     @Test
     public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyTwoCharToDecompress() {
         //given

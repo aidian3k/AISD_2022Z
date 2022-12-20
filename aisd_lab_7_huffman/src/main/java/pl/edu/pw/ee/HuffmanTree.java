@@ -48,7 +48,7 @@ public class HuffmanTree {
     }
 
     private Node createHuffmanTree(List<Node> listOfNodes) {
-        if (listOfNodes.size() == 0) {
+        if (listOfNodes.isEmpty()) {
             return null;
         }
 
@@ -119,8 +119,8 @@ public class HuffmanTree {
 
         saveHuffmanTreeToFile();
 
-        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
-        PrintWriter compressWriter = new PrintWriter(new FileWriter(pathToRootDir + "/compressedFile.txt", StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/decompressedFile.txt", StandardCharsets.ISO_8859_1));
+        PrintWriter compressWriter = new PrintWriter(new FileWriter(pathToRootDir + "/compressedFile.txt", StandardCharsets.ISO_8859_1));
         int characterReader;
 
         while ((characterReader = reader.read()) != -1) {
@@ -138,8 +138,8 @@ public class HuffmanTree {
     }
 
     public int decodeFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/compressedFile.txt", StandardCharsets.UTF_8));
-        PrintWriter decodeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/decompressedFile.txt", StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new FileReader(pathToRootDir + "/compressedFile.txt", StandardCharsets.ISO_8859_1));
+        PrintWriter decodeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/decompressedFile.txt", StandardCharsets.ISO_8859_1));
 
         int characterReader;
         int counter = 0;
@@ -176,7 +176,7 @@ public class HuffmanTree {
     }
 
     private void saveHuffmanTreeToFile() throws IOException {
-        PrintWriter treeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/keys.txt"));
+        PrintWriter treeWriter = new PrintWriter(new FileWriter(pathToRootDir + "/keys.txt", StandardCharsets.ISO_8859_1));
         String preOrderTraversalResult = traverseHuffmanTreePreOrder();
         treeWriter.print(preOrderTraversalResult);
 

@@ -17,7 +17,7 @@ public class FileHandler {
 
         this.isCompressing = compress;
         String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
-        this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.UTF_8));
+        this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.ISO_8859_1));
     }
 
     public List<Node> readFrequencyOfSingleCharacters() throws IOException {
