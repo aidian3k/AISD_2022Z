@@ -12,37 +12,52 @@ public class LongestCommonSubsequence {
         this.topStr = topStr;
         this.leftStr = leftStr;
         this.fillCharacterMatrix();
+        this.prepareDisplayMatrix();
     }
 
     public void display() {
-        prepareDisplayMatrix();
+        for (int row = 0; row < displayMatrix.length; ++row) {
+            for (int column = 0; column < displayMatrix[row].length; ++column) {
+                char singleCharacter = displayMatrix[row][column];
+                System.out.print(singleCharacter);
+            }
+
+            System.out.print("\n");
+        }
     }
 
     public String findLCS() {
         StringBuilder resultLongestCommonSubsequence = new StringBuilder();
 
-        int topStringLength = topStr.length();
-        int leftStringLength = leftStr.length();
-
-        return recreateLongestCommonSubsequence(leftStringLength, topStringLength, resultLongestCommonSubsequence);
+        return recreateLongestCommonSubsequence(resultLongestCommonSubsequence);
     }
 
-    private String recreateLongestCommonSubsequence(int row, int column, StringBuilder result) {
-        if (row == 0 || column == 0) {
-            return result.reverse().toString();
-        }
-
-        if (characterMatrix[row][column] - 1 == characterMatrix[row - 1][column - 1]) {
-            result.append(leftStr.charAt(row - 1));
-            return recreateLongestCommonSubsequence(row - 1, column - 1, result);
-        } else if (characterMatrix[row][column] == characterMatrix[row - 1][column]) {
-            return recreateLongestCommonSubsequence(row - 1, column, result);
-        } else {
-            return recreateLongestCommonSubsequence(row, column - 1, result);
-        }
+    public char[][] getDisplayMatrix() {
+        return this.displayMatrix;
     }
 
-    public void fillCharacterMatrix() {
+    private String recreateLongestCommonSubsequence(StringBuilder result) {
+        int currentColumn = topStr.length();
+        int currentRow = leftStr.length();
+
+        while (currentColumn > 0 && currentRow > 0) {
+            if (topStr.charAt(currentColumn - 1) == leftStr.charAt(currentRow - 1)) {
+                char singleCharacter = topStr.charAt(currentColumn - 1);
+                result.append(singleCharacter);
+
+                currentRow--;
+                currentColumn--;
+            } else if (characterMatrix[currentRow - 1][currentColumn] >= characterMatrix[currentRow][currentColumn - 1]) {
+                currentRow--;
+            } else {
+                currentColumn--;
+            }
+        }
+
+        return result.reverse().toString();
+    }
+
+    private void fillCharacterMatrix() {
         int topStringLength = topStr.length();
         int leftStringLength = leftStr.length();
 
@@ -59,7 +74,7 @@ public class LongestCommonSubsequence {
         }
     }
 
-    public void prepareDisplayMatrix() {
+    private void prepareDisplayMatrix() {
         int topStrLength = topStr.length();
         int leftStrLength = leftStr.length();
         int matrixHeight = leftStrLength * 4 + 9;
@@ -118,15 +133,6 @@ public class LongestCommonSubsequence {
         }
     }
 
-    public void displayArr() {
-        for (char[] matrix : displayMatrix) {
-            for (char c : matrix) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
-
     private void fillMatrixWithStringCharacters(int matrixWidth, int matrixHeight) {
         int stringIterator = 0;
         char singleCharacter;
@@ -134,7 +140,7 @@ public class LongestCommonSubsequence {
         for (int column = 17; column < matrixWidth; column += 8) {
             singleCharacter = topStr.charAt(stringIterator);
 
-            if (!setSpecialCharacter(2, column, singleCharacter)) {
+            if (!setSpecialCharacter(2, column + 3, singleCharacter)) {
                 displayMatrix[2][column + 3] = singleCharacter;
             }
 
@@ -156,23 +162,23 @@ public class LongestCommonSubsequence {
 
     private boolean setSpecialCharacter(int row, int column, char sign) {
         if (sign == '\n') {
-            displayMatrix[row][column] = '\\';
-            displayMatrix[row][column + 1] = 'n';
+            displayMatrix[row][column - 1] = '\\';
+            displayMatrix[row][column] = 'n';
 
             return true;
         } else if (sign == '\r') {
-            displayMatrix[row][column] = '\\';
-            displayMatrix[row][column + 1] = 'r';
+            displayMatrix[row][column - 1] = '\\';
+            displayMatrix[row][column] = 'r';
 
             return true;
         } else if (sign == '\t') {
-            displayMatrix[row][column] = '\\';
-            displayMatrix[row][column + 1] = 't';
+            displayMatrix[row][column - 1] = '\\';
+            displayMatrix[row][column] = 't';
 
             return true;
         } else if (sign == ' ') {
-            displayMatrix[row][column] = '\\';
-            displayMatrix[row][column + 1] = 's';
+            displayMatrix[row][column - 1] = '\\';
+            displayMatrix[row][column] = 's';
 
             return true;
         } else {
