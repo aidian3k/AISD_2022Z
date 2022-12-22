@@ -16,11 +16,6 @@ public class FileHandler {
     public FileHandler(String pathToRootDir, boolean compress) {
         validateInput(pathToRootDir, compress);
 
-<<<<<<< HEAD:aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/FileHandler.java
-        this.isCompressing = compress;
-        String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
-        this.reader = new BufferedReader(new FileReader(pathToFile, StandardCharsets.ISO_8859_1));
-=======
         try {
             this.isCompressing = compress;
             String pathToFile = compress ? pathToRootDir + "/decompressedFile.txt" : pathToRootDir + "/keys.txt";
@@ -28,7 +23,6 @@ public class FileHandler {
         } catch (IOException fileException) {
             throw new IllegalStateException("There is a problem with initializing the reader file!");
         }
->>>>>>> 77466e65f972e1238b5d71e10f883f3f94861098:aisd_lab_7_huffman/src/main/java/pl/edu/pw/ee/fileHandling/FileHandler.java
     }
 
     public List<Node> readFrequencyOfSingleCharacters() {

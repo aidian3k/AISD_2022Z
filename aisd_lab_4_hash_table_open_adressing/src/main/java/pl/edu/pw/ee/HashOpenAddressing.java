@@ -1,6 +1,6 @@
 package pl.edu.pw.ee;
 
-import pl.edu.pw.ee.services.HashTable;
+import pl.edu.pw.ee.heap.services.HashTable;
 
 import java.util.Arrays;
 

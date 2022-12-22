@@ -2,7 +2,7 @@ package pl.edu.pw.ee;
 
 import org.junit.Before;
 import org.junit.Test;
-import pl.edu.pw.ee.services.Sorting;
+import pl.edu.pw.ee.heap.services.Sorting;
 
 import java.util.Arrays;
 import java.util.Random;

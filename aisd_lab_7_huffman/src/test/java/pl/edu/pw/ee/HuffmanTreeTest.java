@@ -145,11 +145,6 @@ public class HuffmanTreeTest {
         assertEquals(expectedCodeSize, huffmanTree.getCodes().size());
         assertEquals(expectedCodeForA, huffmanTree.getCodes().get('a'));
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 77466e65f972e1238b5d71e10f883f3f94861098
     @Test
     public void should_correctlyRebuildHuffmanTree_when_thereAreOnlyTwoCharToDecompress() {
         //given

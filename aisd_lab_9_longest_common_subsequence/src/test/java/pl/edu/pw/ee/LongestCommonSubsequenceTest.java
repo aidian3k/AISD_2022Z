@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LongestCommonSubsequenceTest {
 
-    private static final String PATH_TO_TEST_DIR = "src/test/java/resources";
+    private static final String PATH_TO_TEST_DIR = "src/test/resources";
     private String expectedMatrixFileName;
     private LongestCommonSubsequence longestCommonSubsequence;
 
@@ -230,8 +230,8 @@ public class LongestCommonSubsequenceTest {
     @Test
     public void should_correctlyFindLcs_when_thereIsOnlyOneLcs() {
         //given
-        String leftStr = "PREZENT";
-        String topStr = "RESZTA";
+        String leftStr = "RESZTA";
+        String topStr = "PREZENTY";
 
         //when
         longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
@@ -259,6 +259,7 @@ public class LongestCommonSubsequenceTest {
 
         longestCommonSubsequence = new LongestCommonSubsequence(secondTopStr, secondLeftStr);
         String secondLcsString = longestCommonSubsequence.findLCS();
+        longestCommonSubsequence.display();
 
         //then
         int expectedLcsLength = 4;
@@ -321,6 +322,157 @@ public class LongestCommonSubsequenceTest {
         assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
     }
 
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_leftStringIsEmpty() {
+        //given
+        expectedMatrixFileName = "leftStringIsEmpty.txt";
+        String topStr = "abc";
+        String leftStr = "";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_topStringIsEmpty() {
+        //given
+        expectedMatrixFileName = "topStringIsEmpty.txt";
+        String topStr = "";
+        String leftStr = "abc";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_leftStrHasOneLetter() {
+        //given
+        expectedMatrixFileName = "leftStrHasOneLetter.txt";
+        String leftStr = "a";
+        String topStr = "abac";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_topStrHasOneLetter() {
+        //given
+        expectedMatrixFileName = "topStrHasOneLetter.txt";
+        String leftStr = "bacaca";
+        String topStr = "b";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_topAndLeftStringAreTheSame() {
+        //given
+        expectedMatrixFileName = "topAndLeftStrAreTheSame.txt";
+        String leftStr = "bababa";
+        String topStr = "bababa";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_topAndLeftStringHasOneLetter() {
+        //given
+        expectedMatrixFileName = "topAndLeftStrHasOneLetter.txt";
+        String leftStr = "a";
+        String topStr = "a";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_thereAreManySpecialCharacters() {
+        //given
+        expectedMatrixFileName = "thereAreManySpecialCharacters.txt";
+        String leftStr = "\t\t\naba\n\n\t\r ";
+        String topStr = "\t\t a\n\t";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateMatrix_when_thereIsOnlyOneLcs() {
+        //given
+        expectedMatrixFileName = "thereIsOnlyOneLcs.txt";
+        String leftStr = "RESZTA";
+        String topStr = "PREZENTY";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        longestCommonSubsequence.display();
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_leftStringContainsTopString() {
+        //given
+        expectedMatrixFileName = "leftStrContainsTopStr.txt";
+        String leftStr = "AB  AB AB";
+        String topStr = "AB";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
+    @Test
+    public void should_correctlyGenerateDisplayMatrix_when_findingLcsFromSample() {
+        //given
+        expectedMatrixFileName = "sampleFileLcs.txt";
+        String leftStr = "rzeczy_nie_trzeba\n_się_spieszyć";
+        String topStr = "często_z_odkrywaniem";
+
+        //when
+        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
+        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
+
+        //then
+        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
+    }
+
     private boolean isExpectedMatrixEqualsDisplayMatrix(char[][] displayMatrix) {
         try {
             String pathToExpectedMatrixFile = PATH_TO_TEST_DIR + "/" + expectedMatrixFileName;
@@ -333,17 +485,18 @@ public class LongestCommonSubsequenceTest {
             while ((characterReader = reader.read()) != -1) {
                 char singleCharacter = (char) characterReader;
 
+                if (singleCharacter == '\n') {
+                    currentRow++;
+                    currentColumn = 0;
+                    continue;
+                }
+
                 if (singleCharacter != displayMatrix[currentRow][currentColumn]) {
                     reader.close();
                     return false;
                 }
 
                 currentColumn++;
-
-                if (singleCharacter == '\n') {
-                    currentRow++;
-                    currentColumn = 0;
-                }
             }
 
             reader.close();

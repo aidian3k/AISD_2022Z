@@ -1,7 +1,7 @@
 package pl.edu.pw.ee;
 
-import pl.edu.pw.ee.services.HeapExtension;
-import pl.edu.pw.ee.services.Sorting;
+import pl.edu.pw.ee.heap.services.HeapExtension;
+import pl.edu.pw.ee.heap.services.Sorting;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package pl.edu.pw.ee.PerformanceTests;
 import org.junit.Before;
 import org.junit.Test;
 import pl.edu.pw.ee.QuickSort;
-import pl.edu.pw.ee.services.Sorting;
+import pl.edu.pw.ee.heap.services.Sorting;
 
 import java.io.FileWriter;
 import java.io.IOException;

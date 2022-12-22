@@ -1,7 +1,7 @@
 package pl.edu.pw.ee;
 
 import java.util.Arrays;
-import pl.edu.pw.ee.services.Sorting;
+import pl.edu.pw.ee.heap.services.Sorting;
 
 public class RefAlgorithm implements Sorting {
 

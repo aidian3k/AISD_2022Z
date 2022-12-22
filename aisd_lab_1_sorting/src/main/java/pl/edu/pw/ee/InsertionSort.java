@@ -1,6 +1,6 @@
 package pl.edu.pw.ee;
 
-import pl.edu.pw.ee.services.Sorting;
+import pl.edu.pw.ee.heap.services.Sorting;
 
 public class InsertionSort implements Sorting {
 

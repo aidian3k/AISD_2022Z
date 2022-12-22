@@ -1,4 +1,4 @@
-package pl.edu.pw.ee.services;
+package pl.edu.pw.ee.heap.services;
 
 public interface MapInterface<K extends Comparable<K>, V> {
 

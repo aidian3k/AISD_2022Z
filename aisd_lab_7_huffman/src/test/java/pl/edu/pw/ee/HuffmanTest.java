@@ -302,7 +302,6 @@ public class HuffmanTest {
 
         //then
         assert false;
-
     }
 
 }
