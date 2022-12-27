@@ -3,7 +3,7 @@ package pl.edu.pw.ee;
 public class LongestCommonSubsequence {
     private final String topStr;
     private final String leftStr;
-    private int[][] characterMatrix;
+    private int[][] numberMatrix;
     private char[][] displayMatrix;
 
     public LongestCommonSubsequence(String topStr, String leftStr) {
@@ -16,9 +16,8 @@ public class LongestCommonSubsequence {
     }
 
     public void display() {
-        for (int row = 0; row < displayMatrix.length; ++row) {
-            for (int column = 0; column < displayMatrix[row].length; ++column) {
-                char singleCharacter = displayMatrix[row][column];
+        for (char[] currentRow : displayMatrix) {
+            for (char singleCharacter : currentRow) {
                 System.out.print(singleCharacter);
             }
 
@@ -47,7 +46,7 @@ public class LongestCommonSubsequence {
 
                 currentRow--;
                 currentColumn--;
-            } else if (characterMatrix[currentRow - 1][currentColumn] >= characterMatrix[currentRow][currentColumn - 1]) {
+            } else if (numberMatrix[currentRow - 1][currentColumn] >= numberMatrix[currentRow][currentColumn - 1]) {
                 currentRow--;
             } else {
                 currentColumn--;
@@ -61,14 +60,14 @@ public class LongestCommonSubsequence {
         int topStringLength = topStr.length();
         int leftStringLength = leftStr.length();
 
-        this.characterMatrix = new int[leftStringLength + 1][topStringLength + 1];
+        this.numberMatrix = new int[leftStringLength + 1][topStringLength + 1];
 
         for (int row = 1; row <= leftStringLength; ++row) {
             for (int column = 1; column <= topStringLength; ++column) {
                 if (leftStr.charAt(row - 1) == topStr.charAt(column - 1)) {
-                    characterMatrix[row][column] = characterMatrix[row - 1][column - 1] + 1;
+                    numberMatrix[row][column] = numberMatrix[row - 1][column - 1] + 1;
                 } else {
-                    characterMatrix[row][column] = Math.max(characterMatrix[row - 1][column], characterMatrix[row][column - 1]);
+                    numberMatrix[row][column] = Math.max(numberMatrix[row - 1][column], numberMatrix[row][column - 1]);
                 }
             }
         }
@@ -77,8 +76,14 @@ public class LongestCommonSubsequence {
     private void prepareDisplayMatrix() {
         int topStrLength = topStr.length();
         int leftStrLength = leftStr.length();
-        int matrixHeight = leftStrLength * 4 + 9;
-        int matrixWidth = topStrLength * 8 + 17;
+
+        int heightOfOneCell = 4;
+        int minimalHeightOfMatrix = 9;
+        int widthOfOneCell = 8;
+        int minimalWidthOfMatrix = 17;
+
+        int matrixHeight = leftStrLength * heightOfOneCell + minimalHeightOfMatrix;
+        int matrixWidth = topStrLength * widthOfOneCell + minimalWidthOfMatrix;
 
         this.displayMatrix = new char[matrixHeight][matrixWidth];
 
@@ -103,7 +108,7 @@ public class LongestCommonSubsequence {
 
                 currentNumberMatrixRow--;
                 currentNumberMatrixColumn--;
-            } else if (characterMatrix[currentNumberMatrixRow - 1][currentNumberMatrixColumn] >= characterMatrix[currentNumberMatrixRow][currentNumberMatrixColumn - 1]) {
+            } else if (numberMatrix[currentNumberMatrixRow - 1][currentNumberMatrixColumn] >= numberMatrix[currentNumberMatrixRow][currentNumberMatrixColumn - 1]) {
                 direction = '^';
                 displayMatrix[correspondingRowPosition - 1][correspondingColumnPosition + 2] = direction;
 
@@ -123,13 +128,29 @@ public class LongestCommonSubsequence {
 
         for (int row = 6; row < matrixHeight; row += 4) {
             for (int column = 9; column < matrixWidth; column += 8) {
-                char currentNumber = (char) (characterMatrix[numberMatrixRow][numberMatrixColumn] + '0');
-                displayMatrix[row][column + 3] = currentNumber;
+                int currentNumber = numberMatrix[numberMatrixRow][numberMatrixColumn];
+
+                writeCurrentNumberToGrid(row, column, currentNumber);
                 numberMatrixColumn++;
             }
 
             numberMatrixColumn = 0;
             numberMatrixRow++;
+        }
+    }
+
+    private void writeCurrentNumberToGrid(int currentRow, int currentColumn, int currentNumber) {
+        String parsedNumber = Integer.toString(currentNumber);
+        int numberLength = parsedNumber.length();
+        int spacingInCell = 3;
+
+        if (numberLength == 1) {
+            displayMatrix[currentRow][currentColumn + spacingInCell] = parsedNumber.charAt(0);
+        } else {
+            for (char singleNumber : parsedNumber.toCharArray()) {
+                displayMatrix[currentRow][currentColumn + spacingInCell] = singleNumber;
+                currentColumn++;
+            }
         }
     }
 

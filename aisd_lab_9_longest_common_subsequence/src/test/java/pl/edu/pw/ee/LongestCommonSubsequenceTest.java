@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LongestCommonSubsequenceTest {
-
     private static final String PATH_TO_TEST_DIR = "src/test/resources";
     private String expectedMatrixFileName;
     private LongestCommonSubsequence longestCommonSubsequence;
@@ -259,7 +258,6 @@ public class LongestCommonSubsequenceTest {
 
         longestCommonSubsequence = new LongestCommonSubsequence(secondTopStr, secondLeftStr);
         String secondLcsString = longestCommonSubsequence.findLCS();
-        longestCommonSubsequence.display();
 
         //then
         int expectedLcsLength = 4;
@@ -436,7 +434,6 @@ public class LongestCommonSubsequenceTest {
 
         //when
         longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
-        longestCommonSubsequence.display();
         char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
 
         //then
@@ -488,6 +485,7 @@ public class LongestCommonSubsequenceTest {
                 if (singleCharacter == '\n') {
                     currentRow++;
                     currentColumn = 0;
+
                     continue;
                 }
 
