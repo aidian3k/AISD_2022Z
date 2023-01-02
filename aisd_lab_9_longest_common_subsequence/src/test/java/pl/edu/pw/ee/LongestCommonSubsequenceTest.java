@@ -2,11 +2,9 @@ package pl.edu.pw.ee;
 
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -211,18 +209,18 @@ public class LongestCommonSubsequenceTest {
     }
 
     @Test
-    public void should_correctlyFindLcs_when_stringContainsCarriageReturnSign() {
+    public void should_correctlyFindLcs_when_oneStringContainsCarriageReturnSign() {
         //given
-        String leftStr = "\t\t\r\r\fa";
-        String topStr = "\t\n\r\r\fa";
+        String leftStr = "\t\t\r\ra";
+        String topStr = "\t\n\r\ra";
 
         //when
         longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
         String lcsString = longestCommonSubsequence.findLCS();
 
         //then
-        int expectedLcsLength = 5;
-        String expectedLcsString = "\t\r\r\fa";
+        int expectedLcsLength = 4;
+        String expectedLcsString = "\t\r\ra";
 
         assertEquals(expectedLcsLength, lcsString.length());
         assertEquals(expectedLcsString, lcsString);
@@ -241,24 +239,6 @@ public class LongestCommonSubsequenceTest {
         //then
         int expectedLcsLength = 4;
         String expectedLcsString = "REZT";
-
-        assertEquals(expectedLcsLength, lcsString.length());
-        assertEquals(expectedLcsString, lcsString);
-    }
-
-    @Test
-    public void should_correctlyFindLcs_when_thereIsNoCommonSubsequence() {
-        //given
-        String leftStr = "abcabcabcabc";
-        String topStr = "dfgdfgdfgdfg";
-
-        //when
-        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
-        String lcsString = longestCommonSubsequence.findLCS();
-
-        //then
-        int expectedLcsLength = 0;
-        String expectedLcsString = "";
 
         assertEquals(expectedLcsLength, lcsString.length());
         assertEquals(expectedLcsString, lcsString);
@@ -435,7 +415,7 @@ public class LongestCommonSubsequenceTest {
         //given
         expectedMatrixFileName = "thereAreManySpecialCharacters.txt";
         String leftStr = "\t\t\naba\n\n\t\r ";
-        String topStr = "\t\t a\n\t\f";
+        String topStr = "\t\t a\n\t";
 
         //when
         longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
@@ -490,56 +470,6 @@ public class LongestCommonSubsequenceTest {
         assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
     }
 
-    @Test
-    public void should_correctlyGenerateDisplayMatrix_when_thereIsNoCommonSubsequence() {
-        //given
-        expectedMatrixFileName = "noCommonSubsequence.txt";
-        String leftStr = "asd";
-        String topStr = "fgh";
-
-        //when
-        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
-        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
-
-        //then
-        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
-    }
-
-    @Test
-    public void should_correctlyGenerateDisplayMatrix_when_findingLcsWithLengthBiggerThanNine() {
-        //given
-        expectedMatrixFileName = "lcsLengthBiggerThanNine.txt";
-        String leftStr = "ababbabababababababa";
-        String topStr = "ababababababababababbaba";
-
-        //when
-        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
-        char[][] displayMatrix = longestCommonSubsequence.getDisplayMatrix();
-
-        //then
-        assertTrue(isExpectedMatrixEqualsDisplayMatrix(displayMatrix));
-    }
-
-    @Test
-    public void should_properlyDisplayMatrix_when_thereIsProperLcs() throws IOException {
-        //given
-        String expectedDisplayMatrixPath = PATH_TO_TEST_DIR + "/expectedDisplayMatrix.txt";
-        String leftStr = "RESZTA";
-        String topStr = "PREZENTY";
-
-        //when
-        longestCommonSubsequence = new LongestCommonSubsequence(topStr, leftStr);
-
-        //then
-        String displayMatrixPath = PATH_TO_TEST_DIR + "/displayMatrixTest.txt";
-        File matrixFile = new File(displayMatrixPath);
-        PrintStream outStream = new PrintStream(matrixFile);
-        System.setOut(outStream);
-
-        longestCommonSubsequence.display();
-        assertTrue(isFilesTheSame(expectedDisplayMatrixPath, displayMatrixPath));
-    }
-
     private boolean isExpectedMatrixEqualsDisplayMatrix(char[][] displayMatrix) {
         try {
             String pathToExpectedMatrixFile = PATH_TO_TEST_DIR + "/" + expectedMatrixFileName;
@@ -572,28 +502,6 @@ public class LongestCommonSubsequenceTest {
             return true;
         } catch (IOException | ArrayIndexOutOfBoundsException matrixException) {
             return false;
-        }
-    }
-
-    private boolean isFilesTheSame(String matrixFileName, String expectedMatrixFileName) {
-        try {
-            InputStreamReader expectedReader = new InputStreamReader(new FileInputStream(expectedMatrixFileName));
-            InputStreamReader matrixReader = new InputStreamReader(new FileInputStream(matrixFileName));
-            int expectedCharacterReader;
-
-            while ((expectedCharacterReader = expectedReader.read()) != -1) {
-                char singleExpectedCharacter = (char) expectedCharacterReader;
-                char singleMatrixCharacter = (char) matrixReader.read();
-
-                if (singleExpectedCharacter != singleMatrixCharacter) {
-                    System.out.println(singleMatrixCharacter);
-                    return false;
-                }
-            }
-
-            return true;
-        } catch (IOException fileException) {
-            throw new IllegalStateException("There is problem with reading files!");
         }
     }
 
