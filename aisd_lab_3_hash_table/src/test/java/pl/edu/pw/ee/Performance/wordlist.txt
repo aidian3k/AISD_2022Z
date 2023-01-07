@@ -94495,7 +94495,7 @@ vertebral
 vertebrata
 vertebrate
 vertebrates
-vertex
+node
 vertical
 vertically
 verticals

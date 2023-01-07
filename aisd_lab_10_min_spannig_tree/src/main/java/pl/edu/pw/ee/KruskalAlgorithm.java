@@ -5,7 +5,7 @@ import pl.edu.pw.ee.services.MinSpanningTree;
 
 import java.util.List;
 
-public class PrimAlgorithm implements MinSpanningTree {
+public class KruskalAlgorithm implements MinSpanningTree {
     private Graph graph;
 
     public String findMST(String pathToFile) {
@@ -16,22 +16,21 @@ public class PrimAlgorithm implements MinSpanningTree {
             return minimumSpanningTreeResult.toString();
         }
 
-        Node startingNode = graph.getRoot();
         Heap<Edge> priorityQueue = new Heap<>();
-        startingNode.setVisited();
         int minimumSpanningTreeNodes = 1;
-        addNeighboursToPriorityQueue(priorityQueue, startingNode);
+        addEdgesToPriorityQueue(priorityQueue);
 
         while (priorityQueue.getHeapSize() != 0) {
-            Edge minimumEdge = priorityQueue.pop();
+            Edge minimumWeightEdge = priorityQueue.pop();
 
-            if (!minimumEdge.getEndNode().isVisited()) {
-                Node edgeEndNode = minimumEdge.getEndNode();
-                edgeEndNode.setVisited();
-                addNeighboursToPriorityQueue(priorityQueue, edgeEndNode);
+            Node startingNodeParent = minimumWeightEdge.getStartNode().getParentNode();
+            Node endingNodeParent = minimumWeightEdge.getEndNode().getParentNode();
+
+            if (!startingNodeParent.equals(endingNodeParent)) {
+                startingNodeParent.setParent(endingNodeParent);
 
                 minimumSpanningTreeNodes++;
-                minimumSpanningTreeResult.append(minimumEdge).append("|");
+                minimumSpanningTreeResult.append(minimumWeightEdge).append("|");
             }
         }
 
@@ -44,18 +43,15 @@ public class PrimAlgorithm implements MinSpanningTree {
 
     public void checkCohesion(int minimumSpanningTreeNodes) {
         if (minimumSpanningTreeNodes != graph.getNumberOfNodes()) {
-            throw new IllegalStateException("In order to get minimumSpanningTree the graph must be coherent!");
+            throw new IllegalStateException("In order to get minimumSpanningTree  the graph must be coherent!");
         }
     }
 
-    private void addNeighboursToPriorityQueue(Heap<Edge> priorityQueue, Node startingNode) {
-        List<Edge> neighbourEdges = graph.getNeighbourEdges(startingNode);
-
-        for (Edge edge : neighbourEdges) {
-            if (!edge.getEndNode().isVisited()) {
+    public void addEdgesToPriorityQueue(Heap<Edge> priorityQueue) {
+        for (List<Edge> adjacencyList : graph.getAdjacencyList().values()) {
+            for (Edge edge : adjacencyList) {
                 priorityQueue.put(edge);
             }
         }
     }
-
 }
