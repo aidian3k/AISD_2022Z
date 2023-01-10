@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: pl.edu.pw.ee.graph.GraphTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.2 s <<< FAILURE! - in pl.edu.pw.ee.graph.GraphTest
+mix_extended_small_data  Time elapsed: 0.059 s  <<< ERROR!
+pl.edu.pw.ee.exception.ReadingGraphFromFileException: Cannot correctly parse line 2 from file
+	at pl.edu.pw.ee.graph.GraphTest.mix_extended_small_data(GraphTest.java:119)
+
