@@ -108,7 +108,9 @@ public class Graph {
     }
 
     private void validateReadingLine(String[] splitLine, String currentLine, int lineCounter) {
-        if (splitLine.length != 3) {
+        int expectedNumberOfElements = 3;
+
+        if (splitLine.length != expectedNumberOfElements) {
             String exceptionMessage = String.format("There is wrong line in file [%s] in line: %d", currentLine, lineCounter);
             throw new IllegalArgumentException(exceptionMessage);
         }

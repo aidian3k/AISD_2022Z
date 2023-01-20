@@ -52,9 +52,7 @@ public class PrimAlgorithm implements MinSpanningTree {
         List<Edge> neighbourEdges = graph.getNeighbourEdges(startingNode);
 
         for (Edge edge : neighbourEdges) {
-            if (!edge.getEndNode().isVisited()) {
-                priorityQueue.put(edge);
-            }
+            priorityQueue.put(edge);
         }
     }
 

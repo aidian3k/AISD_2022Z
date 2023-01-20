@@ -13,9 +13,7 @@ public class Suprise {
 
         HashMap<Integer, Integer> frequency = new HashMap<>();
 
-        for (int i = 0; i < tab.length; ++i) {
-            int currentNumber = tab[i];
-
+        for (int currentNumber : tab) {
             if (!frequency.containsKey(currentNumber)) {
                 frequency.put(currentNumber, 1);
             } else {

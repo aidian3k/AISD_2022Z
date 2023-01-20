@@ -6,6 +6,8 @@ public class Edge implements Comparable<Edge> {
     private final int weight;
 
     public Edge(Node startNode, Node endNode, int weight) {
+        validateInput(startNode, endNode, weight);
+
         this.startNode = startNode;
         this.endNode = endNode;
         this.weight = weight;
@@ -21,6 +23,16 @@ public class Edge implements Comparable<Edge> {
 
     public int getWeight() {
         return this.weight;
+    }
+
+    private void validateInput(Node startNode, Node endNode, int weight) {
+        if (startNode == null || endNode == null) {
+            throw new IllegalArgumentException("StartNode and endNode cannot be null values!");
+        }
+
+        if (weight < 0) {
+            throw new IllegalArgumentException("Weight between the nodes cannot be negative!");
+        }
     }
 
     @Override
